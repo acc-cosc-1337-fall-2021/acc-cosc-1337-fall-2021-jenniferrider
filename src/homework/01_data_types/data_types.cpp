@@ -9,10 +9,10 @@ int add_numbers(int num1, int num2)
 //write function code here
 int multiply_numbers(int num1)
 {
-	// variables
+	//variables
 	int num2 = 5;
 
-	//return
+	//function
 	return num1 * num2;
 }
 
