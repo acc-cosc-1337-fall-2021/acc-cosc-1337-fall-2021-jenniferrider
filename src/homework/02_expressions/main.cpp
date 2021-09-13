@@ -2,7 +2,7 @@
 #include <iostream>
 #include <iomanip>
 #include <math.h>
-#include "hwexpressions.h"
+#include <hwexpressions.h>
 
 //write namespace using statement for cout
 using std::cin; using std::cout; using std::setw; using std::setprecision; using std::fixed;
@@ -49,7 +49,7 @@ int main()
 	cout << setw(14) << "Sales Tax:   $" << setw(5) << tax_amount << "\n";
 	cout << setw(14) << "Tip Amount:  $" << setw(5) << tip_amount << "\n";
 	cout << setw(14) << "Total:       $" << setw(5) << total << "\n\n";
-	cout << "Goodbye.";
+	cout << "Goodbye.\n";
 
 	// return
 	return 0;
