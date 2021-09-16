@@ -49,7 +49,6 @@ int main()
 	cout << setw(14) << "Sales Tax:   $" << setw(5) << tax_amount << "\n";
 	cout << setw(14) << "Tip Amount:  $" << setw(5) << tip_amount << "\n";
 	cout << setw(14) << "Total:       $" << setw(5) << total << "\n\n";
-	cout << "Goodbye.\n";
 
 	// return
 	return 0;
