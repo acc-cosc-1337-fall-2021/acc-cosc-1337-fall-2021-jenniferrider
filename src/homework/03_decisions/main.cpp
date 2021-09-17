@@ -30,18 +30,18 @@ int main()
 
 			if (grade < 0 || grade > 100)
 			{
-				cout << "\nThe number you entered is out of range. This program will now exit.\n";
+				cout << "\nThe number you entered is out of range.\n";
 			}
 			else
 			{
 				switch (num)
 				{
 					case 1:
-						cout << "\nYou chose the 'if' method of letter grade calculation.\n";
+						cout << "\nYou chose the 'if' method of letter grade calculation.";
 						letter_grade = get_letter_grade_using_if(grade);
 						break;
 					default:
-						cout << "\nYou chose the 'switch' method of letter grade calculation.\n";
+						cout << "\nYou chose the 'switch' method of letter grade calculation.";
 						letter_grade = get_letter_grade_using_switch(grade);
 						break;
 				}
@@ -50,14 +50,14 @@ int main()
 			}
 			break;
 		case 3:
-			cout << "\nYou chose to exit the program\n.";
+			cout << "\nYou chose to exit the program.\n";
 			break;
 		default: 
-			cout << "\nYou made an invalid selection so this program is ending.\n";
+			cout << "\nYou made an invalid selection.\n";
 			break;
 	}
 
-	cout << "Goodbye.\n";
+	cout << "\nThis program will now exit.  Goodbye.\n";
 	
 	return 0;
 }
