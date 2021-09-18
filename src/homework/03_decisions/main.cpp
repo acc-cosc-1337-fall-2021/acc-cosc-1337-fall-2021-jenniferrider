@@ -56,7 +56,7 @@ int main()
 		case 3:
 			cout << "\nYou chose to exit the program.\n";
 			break;
-		// user does not understand how to read a menu
+		// user does not understand how to read a menu or unclear on numbers
 		default: 
 			cout << "\nYou made an invalid selection.\n";
 			break;
