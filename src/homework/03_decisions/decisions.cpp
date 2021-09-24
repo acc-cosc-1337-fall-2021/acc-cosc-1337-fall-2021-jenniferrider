@@ -6,7 +6,7 @@
 string get_letter_grade_using_if(int grade)
 {
     // if function decision tree to get grade
-    if (grade >= 90)
+    if (grade <= 100 && grade >= 90)
     {
         return "A";
     }
@@ -30,7 +30,14 @@ string get_letter_grade_using_if(int grade)
                 }
                 else
                 {   
-                    return "F";
+                    if(grade <=59 && grade >= 0)
+                    {
+                        return "F";
+                    }
+                    else
+                    {
+                        return "Invalid number.";
+                    }
                 }
             }
         }
