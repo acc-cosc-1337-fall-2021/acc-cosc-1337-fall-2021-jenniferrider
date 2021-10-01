@@ -2,7 +2,8 @@
 #include<iostream>
 #include<dna.h>
 #include<string>
-#include <stdio.h>
+#include<stdio.h>
+#include <bits/stdc++.h>
 
 //write using statements
 using std::cout; using std::cin; using std::string;
@@ -47,31 +48,19 @@ int main()
 				{
 					// get user input for factorial
 					cout<<"\nYou chose Factorial aka Adventures with Factorials.\n";
-					cout<<"Enter a number to start your personal factorial adventure: ";
+					cout<<"Enter a number from 1 to 12 to start your personal factorial adventure: ";
 					cin>>num;
-					if(num > secret1)
-					{
-						num = secret1;
-					}
 					my_answer=factorial(num);
 				}
 				else
 				{
 					// get user info for greatest common divisor
 					cout<<"\nYou chose Greatest Common Divisor To Ever Exist in Mathematics\n";
-					cout<<"Enter two numbers to get their greatest common divisor:\n";
+					cout<<"Enter two numbers to get their greatest common divisor.  Both must be greater than zero but less than the integer max value.\n";
 					cout<<"First number: ";
 					cin>>num1;
-					if(num1 > secret2)
-					{
-						num1 = secret2;
-					}
 					cout<<"Second number: ";
 					cin>>num2;
-					if(num2 > secret2)
-					{
-						num2 = secret1;
-					}
 					my_answer=gcd(num1,num2);
 				}
 				// display answer
@@ -98,17 +87,7 @@ int main()
 				cout << "Menu Option 3: Exit Program\n";
 				cout << "Exit the program.\n\n";
 				cout << "Note: the int data type only allows numbers up to 2,147,483,647.  So when entering a number for factorial \n";
-				cout << "your effective limit is 12: for greatest common divisor, 2,147,483,647. I will drop your number to one of those \n";
-				cout << "if needed, as otherwise, my program freezes and if you're using VSCode, you have to ctrl-C to get out.  Super annoying.\n";
-				break;
-			// user chose secret option which means you saw it in the code
-			case 22:
-				cout << "This is a secret option.  Clever.\n";
-				cout << "Enter a number: ";
-				cin >> num;
-				my_answer=factorial(num);
-				my_answer=gcd(num,my_answer);
-				cout << "The answer is " << my_answer << ".\n";
+				cout << "your effective limit is 12: for greatest common divisor, 2,147,483,647.\n";
 				break;
 			// user does not understand how to read a menu or unclear on numbers
 			default: 
