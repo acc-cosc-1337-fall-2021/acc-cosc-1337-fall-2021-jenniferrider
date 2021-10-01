@@ -5,7 +5,6 @@
 int factorial(int num)
 {
     int x=1;
-    int numx;
     while(num > 0)
     {
         x = x * num;
