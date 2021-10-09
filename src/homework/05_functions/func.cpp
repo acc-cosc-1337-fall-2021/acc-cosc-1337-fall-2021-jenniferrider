@@ -2,31 +2,9 @@
 #include<func.h>
 
 // namespace
-using std::string; using std::toupper;
+using std::string; using std::toupper; using std::tolower;
 
 //add function code here
-string convert_to_uppercase(string dna)
-{
-    int i;
-    int strleg;
-    string letr = "";
-
-    // initialize variables
-    letr = "";
-
-    // get string length
-    strleg = dna.length();
-
-    // change to uppercase
-    for(i=0;i<strleg;i++)
-    {
-        dna[i] = toupper(dna[i]);
-    }
-
-    //return
-    return dna;
-}
-
 double get_gc_content(const string& dna)
 {
     // variables
@@ -134,4 +112,48 @@ string get_dna_complement(string dna)
 
     // return
     return intdna;
+}
+
+string convert_to_uppercase(string str)
+{
+    int i;
+    int strleg;
+    string letr = "";
+
+    // initialize variables
+    letr = "";
+
+    // get string length
+    strleg = str.length();
+
+    // change to uppercase
+    for(i=0;i<strleg;i++)
+    {
+        str[i] = toupper(str[i]);
+    }
+
+    //return
+    return str;
+}
+
+string convert_to_lowercase(string str)
+{
+    int i;
+    int strleg;
+    string letr = "";
+
+    // initialize variables
+    letr = "";
+
+    // get string length
+    strleg = str.length();
+
+    // change to uppercase
+    for(i=0;i<strleg;i++)
+    {
+        str[i] = tolower(str[i]);
+    }
+
+    //return
+    return str;
 }
