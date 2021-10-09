@@ -27,7 +27,6 @@ int main()
 	while(run_again == "y")
 	{
 		run_count++;
-		cout << "\n" << run_count << "\n\n";
 		// menu to select your poison
 		cout << "\n\nMAIN MENU\n\n";
 		cout << "1-Get GC Content\n";
