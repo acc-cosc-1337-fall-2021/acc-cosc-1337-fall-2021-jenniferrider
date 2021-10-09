@@ -1,10 +1,11 @@
-// include
+// includes
 #include<iostream>
-#include<func.h>
 #include<stdio.h>
+#include<func.h>
 
-// namespace
+// namespaces
 using std::cout; using std::cin;
+
 /*
 So much DNA stuff here.
 
@@ -76,6 +77,7 @@ int main()
 					// output answer to user
 					cout << "The GC content of " << my_dna << " is " << retanswer << "%.\n\n";
 				}
+				// selection is 2
 				else
 				{
 					// remind user what they selected to do
@@ -123,7 +125,7 @@ int main()
 
 	}// end while
 
-	// conditional check
+	// conditional for 'time'
 	string str_tm, str_tm2;
 	str_tm = (run_count == 1) ? "time" : "times";
 	str_tm2 = (my_count == 1) ? "time" : "times";

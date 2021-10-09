@@ -25,3 +25,12 @@ TEST_CASE("Testing custom uppercase function")
 	REQUIRE(convert_to_uppercase("cccggaaaat")=="CCCGGAAAAT");
 
 }
+
+TEST_CASE("Testing custom lowercase function")
+{
+	REQUIRE(convert_to_lowercase("AgCtAtAg")=="agctatag");
+	REQUIRE(convert_to_lowercase("CgctAtAg")=="cgctatag");
+	REQUIRE(convert_to_lowercase("AaaaCcCGgt")=="aaaacccggt");
+	REQUIRE(convert_to_lowercase("CCCGGAAAAT")=="cccggaaaat");
+
+}
