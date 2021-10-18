@@ -1,10 +1,9 @@
 // include
 #include "tic_tac_toe.h"
 #include <iostream>
-#include <vector>
 
 // using
-using std::cout; using std::vector;
+using std::cout;
 
 void TicTacToe::display_board() const
 {
