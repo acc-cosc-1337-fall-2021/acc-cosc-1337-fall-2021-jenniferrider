@@ -28,8 +28,10 @@ class TicTacToe
 };
 
 // other functions
-void clear_local_data(vector<string> &all_slots, vector<int> &game_history);
-void get_game_history(const vector<int> &game_history, int game_count);
+int calc_time(int x);
+void display_menu();
+void clear_local_data(vector<int> &game_history, vector<string> &all_slots);
+void get_game_history(const vector<int> &game_history, const vector<string> &all_slots, int game_count, double tm_elapsed);
 
 // helper functions
 void strToUpper(string &str);

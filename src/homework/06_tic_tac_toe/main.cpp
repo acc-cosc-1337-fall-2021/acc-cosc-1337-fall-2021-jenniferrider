@@ -1,6 +1,7 @@
 // includes
 #include "tic_tac_toe.h"
 #include <iostream>
+#include <time.h>
 
 // using
 using std::cin; using std::cout;
@@ -16,38 +17,38 @@ int main()
 	int game_count;
 	int turn_count;
 	int position;
-	bool pass_slot;
+	double tm_elapsed;
+	bool slot_available;
 	string play_again;
 	string first_player;
-	string second_player;
 	string current_player;
 	string open_slot;
-	string position_text;
 
 	// initialized variables
 	game_count = 0;
 	play_again = "y";
 	open_slot = " ";
-	position_text = "Last Move: ";
-	int auto_positions[9] = {1,2,3,4,5,7,6,9,8};
-	vector<string> all_slots = vector<string>(9," ");
-	vector<int> game_history = vector<int>(9);
+	int auto_positions[9] = {1,2,3,4,5,7,6,9,8};			// array for automated play
+	vector<string> all_slots = vector<string>(9," ");		// tracks used slots
+	vector<int> game_history = vector<int>(9);				// keeps turn history of single game
 
 	// program information
 	cout << "\nWelcome to Tic-Tac-Toe!  This is a game everyone can play!\n";
 
 	// starting game
+	time_t start = time(NULL);
+
 	do
 	{
-		// clear any local existing history and data
-		clear_local_data(all_slots, game_history);
+		// clear local existing history and data
+		clear_local_data(game_history, all_slots);
 
 		// set mode - auto or live play
-		cout << "\nDo you want to watch the automated game or play live?  Enter 0 for automated and 1 for live: ";
+		display_menu();
 		cin >> mode;
 
 		// if playing live, choose X or O
-		if(mode == 1)
+		if(mode == 1 || mode == 2)
 		{
 			do
 			{
@@ -57,13 +58,14 @@ int main()
 				strToUpper(first_player);
 
 			} while (first_player != "X" && first_player != "O");
-
-			// second player
-			second_player = (first_player == "X") ? "O" : "X";
+		}
+		else if (mode == 0)
+		{
+			first_player = "X";
 		}
 		else
 		{
-			first_player = "X";
+			break;
 		}
 
 		// display board for game start
@@ -82,16 +84,34 @@ int main()
 			// display round number
 			cout << "\nRound " << turn_count + 1 << "\n";
 
-			// play mode
-			if(mode == 1)
+			// get current player
+			current_player=(turn_count ==0 || turn_count % 2 == 0) ? first_player : (first_player == "X") ? "O" : "X";
+
+			// play modes 1 and 2
+			if(mode == 1 || mode == 2)
 			{
 				// set pass slot
-				pass_slot = false;
+				slot_available = false;
 
 				do
 				{
-					// round selection
-					if(turn_count == 0 || turn_count % 2 == 0)
+					// get current player
+					//current_player=(turn_count ==0 || turn_count % 2 == 0) ? first_player : (first_player == "X") ? "O" : "X";
+
+					// get position
+					if(mode == 1 && turn_count % 2 != 0)
+					{
+						cout << "\nAutomated Player\n";
+						position = (rand() % 9) + 1;
+					}
+					else
+					{
+						cout<<"\nSelect a position between 1 and 9: ";
+						cin>>position;
+					}
+					
+					// modes: live against computer and two player
+					/*if(turn_count == 0 || turn_count % 2 == 0)
 					{
 						// get current player and choice
 						current_player = first_player;
@@ -101,35 +121,39 @@ int main()
 					else
 					{
 						// get current player and position
-						current_player = second_player;
+						current_player = (first_player == "X") ? "O" : "X";
 						position = (rand() % 9) + 1;
-					}
+					}*/
 
 					// validate slot is free
 					if(all_slots[position-1] == open_slot)
 					{
-						pass_slot = true;
+						slot_available = true;
 					}
 					else
 					{
-						// user output if first player 
-						if(current_player == first_player){ cout << "\nThat position is filled. Try again.\n";}
+						// user output if first player or in mode 2 player live play
+						//if(current_player == first_player || mode == 2){ cout << "\nThat position is filled. Try again.\n";}
+						game.display_board();
 					}
 
-				} while (pass_slot == false);
+				} while (slot_available == false);
 				
-				// update all_slots and game history
-				all_slots[position-1] = current_player;
-				game_history[turn_count] = position;
 			}
 			else
 			{
-				// automated choice and output text
+				// automated choice from array and output text
+				//current_player=(turn_count == 0 || turn_count % 2 == 0) ? first_player : (first_player == "X") ? "O" : "X";
 				position = auto_positions[turn_count];
 			}
 
+			// update all_slots and game history
+			all_slots[position-1] = current_player;
+			game_history[turn_count] = position;
+
 			// display position
-			cout << position_text << position << "\n\n";
+			cout << "Player " << current_player << "\n";
+			cout << "Last Move: " << position << "\n\n";
 
 			// mark position, display board, check to see if all slots are filled
 			game.mark_board(position);
@@ -149,26 +173,26 @@ int main()
 		// user interaction - play again
 		cout << "\nDo you want to play again? ";
 		cin >> play_again;
-
-		// convert to lowercase
 		strToLower(play_again);
 
 	} while(play_again == "y");
 
 	// clear console
-	system("clear");
+	//system("clear");
+
+	// end time
+	time_t end = time(NULL);
+	tm_elapsed = end - start;
 
 	// display game history
-	if(mode == 1)
-	{
-		get_game_history(game_history, game_count);
-	}
+	//if(mode == 1 || mode == 2){ get_game_history(game_history, all_slots, game_count,tm_elapsed);}
+ 	get_game_history(game_history, all_slots, game_count,tm_elapsed);
 
 	// clear local data
-	clear_local_data(all_slots, game_history);
+	clear_local_data(game_history, all_slots);
 
 	// end game
-	cout<< "\nThank you for playing!\n";
+	cout<< "\nHope to see you again soon!\n";
 	
 	// return
 	return 0;
