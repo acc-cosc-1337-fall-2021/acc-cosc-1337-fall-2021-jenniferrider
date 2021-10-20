@@ -2,6 +2,7 @@
 #include "tic_tac_toe.h"
 #include <iostream>
 #include <time.h>
+#include <limits>
 
 // using
 using std::cin; using std::cout;
@@ -11,15 +12,18 @@ int main()
 {
 	// class declaration
 	TicTacToe game;
+	GamePlay play;
 
 	// variables
 	int mode;
 	int game_count;
 	int turn_count;
 	int position;
+	int last_position;
 	double tm_elapsed;
 	bool slot_available;
 	string play_again;
+	string answer;
 	string first_player;
 	string current_player;
 	string open_slot;
@@ -32,6 +36,9 @@ int main()
 	vector<string> all_slots = vector<string>(9," ");		// tracks used slots
 	vector<int> game_history = vector<int>(9);				// keeps turn history of single game
 
+	// clear history
+	play.clear_game_history();
+
 	// program information
 	cout << "\nWelcome to Tic-Tac-Toe!  This is a game everyone can play!\n";
 
@@ -40,12 +47,50 @@ int main()
 
 	do
 	{
-		// clear local existing history and data
-		clear_local_data(game_history, all_slots);
+		// clear game history
+		play.clear_game_history();
 
 		// set mode - auto or live play
-		display_menu();
+		play.display_menu();
 		cin >> mode;
+
+		while (!std::cin.good())
+		{
+    		cin.clear();
+    		cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+    		cout<<"\nThat was not a number.\n";
+			play.display_menu();
+			cin >> mode;
+		}
+
+		// quit game
+		if(mode == 3)
+		{
+			cout << "Are you sure you want to quit?  Enter 'y' for 'yes' or 'n' for 'no': ";
+			cin >> answer;
+			strToLower(answer);
+
+			if(answer != "n")
+			{
+				// break out of loop and quit
+				break;
+			}
+			else
+			{
+				// set mode - auto or live play
+				play.display_menu();
+				cin >> mode;
+
+				while (!std::cin.good())
+				{
+					cin.clear();
+					cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+					cout<<"\nThat was not a number.\n";
+					play.display_menu();
+					cin >> mode;
+				}
+			}
+		}
 
 		// if playing live, choose X or O
 		if(mode == 1 || mode == 2)
@@ -65,6 +110,7 @@ int main()
 		}
 		else
 		{
+			// quit game
 			break;
 		}
 
@@ -85,77 +131,71 @@ int main()
 			cout << "\nRound " << turn_count + 1 << "\n";
 
 			// get current player
-			current_player=(turn_count ==0 || turn_count % 2 == 0) ? first_player : (first_player == "X") ? "O" : "X";
+			current_player = game.get_player();
 
 			// play modes 1 and 2
 			if(mode == 1 || mode == 2)
 			{
-				// set pass slot
-				slot_available = false;
 
-				do
+				// get position
+				if(mode == 1 && current_player != first_player)
 				{
-					// get current player
-					//current_player=(turn_count ==0 || turn_count % 2 == 0) ? first_player : (first_player == "X") ? "O" : "X";
-
-					// get position
-					if(mode == 1 && turn_count % 2 != 0)
+					last_position = position;
+					position = play.get_next_move(last_position);
+					play.update_game_history(current_player, position, turn_count);
+				}
+				else
+				{
+					slot_available = false;
+					do
 					{
-						cout << "\nAutomated Player\n";
-						position = (rand() % 9) + 1;
-					}
-					else
-					{
-						cout<<"\nSelect a position between 1 and 9: ";
+						cout<<"Select a position between 1 and 9: ";
 						cin>>position;
-					}
-					
-					// modes: live against computer and two player
-					/*if(turn_count == 0 || turn_count % 2 == 0)
-					{
-						// get current player and choice
-						current_player = first_player;
-						cout<<"\nSelect a position between 1 and 9: ";
-						cin>>position;
-					}
-					else
-					{
-						// get current player and position
-						current_player = (first_player == "X") ? "O" : "X";
-						position = (rand() % 9) + 1;
-					}*/
+						while (!std::cin.good())
+						{
+    						cin.clear();
+    						cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+    						cout<<"\nThat was not a number. Try again\n";
+							game.display_board();
+							cout<<"Select a position between 1 and 9: ";
+							cin >> position;
+						}
+			
+						// validate slot is free
+						if(position < 1 || position > 9)
+						{
+							cout<<"That is not a valid position. Try again.\n";
+							game.display_board();
+						}
+						else
+						{
+							slot_available = play.slot_available(position);
+							if(slot_available == false)
+							{
+								cout << "\nThat position is filled. Try again.\n";
+								game.display_board();
+							}
+							else
+							{
+								play.update_game_history(current_player, position, turn_count);
+							}
+						}
 
-					// validate slot is free
-					if(all_slots[position-1] == open_slot)
-					{
-						slot_available = true;
-					}
-					else
-					{
-						// user output if first player or in mode 2 player live play
-						//if(current_player == first_player || mode == 2){ cout << "\nThat position is filled. Try again.\n";}
-						game.display_board();
-					}
-
-				} while (slot_available == false);
-				
+					} while (slot_available == false);
+				}
 			}
+			// automated game
 			else
 			{
 				// automated choice from array and output text
-				//current_player=(turn_count == 0 || turn_count % 2 == 0) ? first_player : (first_player == "X") ? "O" : "X";
 				position = auto_positions[turn_count];
 			}
 
-			// update all_slots and game history
-			all_slots[position-1] = current_player;
-			game_history[turn_count] = position;
-
 			// display position
-			cout << "Player " << current_player << "\n";
+			cout << "\nPlayer " << current_player << "\n";
 			cout << "Last Move: " << position << "\n\n";
 
-			// mark position, display board, check to see if all slots are filled
+			// mark position and display board
 			game.mark_board(position);
 			game.display_board();
 
@@ -167,29 +207,33 @@ int main()
 		// game count
 		game_count++;
 
-		// clear board data
-		game.clear_game_data();
+		// clear board 
+		game.end_game();
 
 		// user interaction - play again
-		cout << "\nDo you want to play again? ";
+		cout << "\nDo you want to play again?  Enter 'y' for 'yes' or 'n' for 'no': ";
 		cin >> play_again;
 		strToLower(play_again);
 
 	} while(play_again == "y");
 
-	// clear console
-	//system("clear");
+	// update games played
+	play.update_games_played(game_count);
 
 	// end time
 	time_t end = time(NULL);
+
+	// get elapsed time
 	tm_elapsed = end - start;
 
-	// display game history
-	//if(mode == 1 || mode == 2){ get_game_history(game_history, all_slots, game_count,tm_elapsed);}
- 	get_game_history(game_history, all_slots, game_count,tm_elapsed);
+	// clear console
+	system("clear");
 
-	// clear local data
-	clear_local_data(game_history, all_slots);
+	// display game history
+	if(mode==1 || mode ==2)
+	{
+		play.display_game_history(tm_elapsed);
+	}
 
 	// end game
 	cout<< "\nHope to see you again soon!\n";
