@@ -142,6 +142,7 @@ void GamePlay::update_game_history(string current_player, int position, int turn
     position_history[turn_count]=position;
     player_history[position-1]=current_player;
     turn_number=turn_count;
+    last_position = position;
 }
 
 void GamePlay::update_games_played(int game_count)
@@ -193,13 +194,14 @@ bool GamePlay::check_slots(int position)
     return available;
 }
 
-int GamePlay::get_next_move(int position)
+int GamePlay::get_next_move()
 {
     // declare class
     TicTacToe game;
 
     // variables
     int i;
+    int position;
     int move;
     int first_slot;
 
@@ -216,6 +218,9 @@ int GamePlay::get_next_move(int position)
                     {5,7,9},
                     {5,6,8}
                     };
+
+    // get last position
+    position = last_position;
 
     // assign to variable
     mychoice = choices[position-1];
@@ -324,7 +329,7 @@ int * calcTime(int x)
     return times;
 }
 
-void strToUpper(string &str)
+void StringExtension::strToUpper(string &str)
 {
     // variables
     int i;
@@ -336,7 +341,7 @@ void strToUpper(string &str)
     }
 }
 
-void strToLower(string &str)
+void StringExtension::strToLower(string &str)
 {
     // variables
     int i;
@@ -345,5 +350,17 @@ void strToLower(string &str)
     for(i=0;i<str.length();i++)
     {
         str[i] = tolower(str[i]);
+    }
+}
+
+void StringExtension::strFirstLetter(string &str)
+{
+    // variables
+    int i;
+
+    // change to uppercase
+    for(i=0;i<str.length();i++)
+    {
+        str[i]=(i==0)?str[i]=toupper(str[i]):str[i]=tolower(str[i]);
     }
 }

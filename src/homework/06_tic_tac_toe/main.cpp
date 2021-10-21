@@ -13,6 +13,7 @@ int main()
 	// class declaration
 	TicTacToe game;
 	GamePlay play;
+	StringExtension stng;
 
 	// variables
 	int mode;
@@ -68,7 +69,7 @@ int main()
 		{
 			cout << "Are you sure you want to quit?  Enter 'y' for 'yes' or 'n' for 'no': ";
 			cin >> answer;
-			strToLower(answer);
+			stng.strToLower(answer);
 
 			if(answer != "n")
 			{
@@ -100,7 +101,7 @@ int main()
 				// get X or O for first player
 				cout << "\nDo you want to be X or O? ";
 				cin >> first_player;
-				strToUpper(first_player);
+				stng.strToUpper(first_player);
 
 			} while (first_player != "X" && first_player != "O");
 		}
@@ -141,8 +142,8 @@ int main()
 				if(mode == 1 && current_player != first_player)
 				{
 					last_position = position;
-					position = play.get_next_move(last_position);
-					play.update_game_history(current_player, position, turn_count);
+					position = play.get_next_move();
+					//play.update_game_history(current_player, position, turn_count);
 				}
 				else
 				{
@@ -175,14 +176,17 @@ int main()
 								cout << "\nThat position is filled. Try again.\n";
 								game.display_board();
 							}
-							else
+							/*else
 							{
 								play.update_game_history(current_player, position, turn_count);
-							}
+							}*/
 						}
 
 					} while (slot_available == false);
 				}
+
+				// update game history
+				play.update_game_history(current_player, position, turn_count);
 			}
 			// automated game
 			else
@@ -213,7 +217,7 @@ int main()
 		// user interaction - play again
 		cout << "\nDo you want to play again?  Enter 'y' for 'yes' or 'n' for 'no': ";
 		cin >> play_again;
-		strToLower(play_again);
+		stng.strToLower(play_again);
 
 	} while(play_again == "y");
 

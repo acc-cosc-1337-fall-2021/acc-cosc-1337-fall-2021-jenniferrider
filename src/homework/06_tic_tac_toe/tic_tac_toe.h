@@ -30,7 +30,7 @@ class TicTacToe
 class GamePlay
 {
     public:
-        int get_next_move(int position);
+        int get_next_move();
         bool slot_available(int position);
         void update_game_history(string current_player, int position, int turn_count);
         void update_games_played(int game_count);
@@ -41,16 +41,19 @@ class GamePlay
     private:
         int games_played;
         int turn_number;
+        int last_position;
         bool check_slots(int position);
     	vector<string> player_history = vector<string>(9," ");		// tracks used slots
 	    vector<int> position_history = vector<int>(9);				// keeps turn history of single game
 };
 
+class StringExtension
+{
+    public:
+        void strToUpper(string &str);
+        void strToLower(string &str);
+        void strFirstLetter(string &str);
+};
+
 // other functions
 int calc_time(int x);
-
-// helper functions
-void strToUpper(string &str);
-void strToLower(string &str);
-
-
