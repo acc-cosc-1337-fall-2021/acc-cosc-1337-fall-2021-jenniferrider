@@ -29,6 +29,8 @@ int main(){
 			// get X or O for first player
 			cout << "\nDo you want to be 'X' or 'O'? ";
 			cin >> first_player;
+			strToUpper(first_player);
+			
 		} while (first_player != "X" && first_player != "O");
 
 		// start game
@@ -61,7 +63,10 @@ int main(){
 		{
 			cout << "\nDo you want to play again?  Enter 'y' for 'yes' or 'n' for 'no': ";
 			cin >> play_again;
+			strToLower(play_again);
+
 		} while (play_again != "y" && play_again != "n");
+
 	} while (play_again == "y");
 
 	// output - end of game

@@ -25,3 +25,7 @@ class TicTacToe
         void set_next_player();
         void clear_board();
 };
+
+// helper functions
+void strToUpper(string &str);
+void strToLower(string &str);
