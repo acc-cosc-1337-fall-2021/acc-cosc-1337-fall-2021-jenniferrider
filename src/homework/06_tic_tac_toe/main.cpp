@@ -55,6 +55,9 @@ int main(){
 		// check to see if all positions are filled; if true, end game
 		} while (game.game_over() == false);
 
+		// output
+		cout << "Game Over\n";
+
 		// reset board using start_game function
 		game.start_game(first_player);
 

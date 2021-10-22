@@ -27,12 +27,12 @@ void TicTacToe::display_board() const
     string g_sp;
 
     // base measurements of board space
-    // total area (from left): 45 spaces
-    // left indent: 20 spaces (g_left)
-    // name indent: 7 spaces (g_name)
-    // board width: 25 spaces (g_row)
-    // square width: 7 spaces (g_sp)
-    // square height: 2 lines 
+    // total area: 45 spaces
+    //// left indent: 20 spaces (g_left)
+    //// board width: 25 spaces (g_row)
+    ////// name indent: 7 spaces (g_name)
+    ////// square width: 7 spaces (g_sp)
+    ////// square height: 2 lines 
 
     // initialize variables
     g_left = string(20,' ');
