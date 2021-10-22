@@ -136,19 +136,42 @@ void TicTacToe::end_game()
     }
 }
 
-void GamePlay::update_game_history(string current_player, int position, int turn_count)
+void GamePlay::display_menu()const
 {
-    // update game history
-    position_history[turn_count]=position;
-    player_history[position-1]=current_player;
-    turn_number=turn_count;
-    last_position = position;
+    // menu
+    cout << "\nPick Your Poison\n\n";
+    cout << "0 - Automated Game\n";
+    cout << "1 - Live Against Computer\n";
+    cout << "2 - Live Two Player\n";
+    cout << "3 - Quit\n\n";
+    cout << "Your choice: ";
 }
 
-void GamePlay::update_games_played(int game_count)
+void GamePlay::update_turn_history(string current_player, int position, int turn_count)
 {
-    // update games played
-    games_played = game_count;
+    // update game history
+    player_history[position-1]=current_player;
+    move_history[turn_count]=position;
+    turn_number = turn_count + 1;
+    last_position = position;
+    last_player = current_player;
+}
+
+void GamePlay::display_turn_info()const
+{
+	// display turn data
+	cout << "\nTurn: " << turn_number << "\n";
+	cout << "Player: " << last_player<< "\n";
+	cout << "Last Move: " << last_position << "\n\n";
+}
+
+void GamePlay::update_game_history(int game_count, string game_type)
+{
+    // update game history vectors
+    game_history_player.push_back(player_history);
+    game_history_position.push_back(move_history);
+    game_type_history.push_back(game_type);
+    games_played = game_count+1;
 }
 
 void GamePlay::clear_game_history()
@@ -161,37 +184,43 @@ void GamePlay::clear_game_history()
     slot = " ";
     
     // clear position and player history
-    position_history.clear();
     for(i=0;i<9;i++)
     {
         player_history[i] = " ";
     }
 }
 
-bool GamePlay::slot_available(int position)
-{
-    return check_slots(position);
-}
-
-bool GamePlay::check_slots(int position)
+bool GamePlay::validate_position(int position)
 {
     // variables
-    bool available;
-    string open_slot;
+    bool valid_position;
 
-    // initialized variables
-    available = false;
-    open_slot = " ";
+    // initialize variables
+    valid_position = false;
 
-    cout << player_history[position-1] << "\n";
-
-    if(player_history[position-1] == open_slot)
+	// validate slot is valid
+    if(position == 12345)
     {
-        available = true;
+        cout<<"\nThat was not a number. Try again\n";
+    }
+	else if(position < 1 || position > 9)
+	{
+		cout<<"\nThat is not a valid position. Try again.\n";
+	}
+	else
+	{
+		if(check_slots(position) == false)
+		{
+			cout << "\nThat position is filled. Try again.\n";
+		}
+        else
+        {
+            valid_position = true;
+        }
     }
 
     // return
-    return available;
+    return valid_position;
 }
 
 int GamePlay::get_next_move()
@@ -201,6 +230,7 @@ int GamePlay::get_next_move()
 
     // variables
     int i;
+    int ix;
     int position;
     int move;
     int first_slot;
@@ -219,30 +249,52 @@ int GamePlay::get_next_move()
                     {5,6,8}
                     };
 
-    // get last position
-    position = last_position;
-
-    // assign to variable
-    mychoice = choices[position-1];
-
-    // find first unused slot
-    for(i=0;i<9;i++)
-    {
-        first_slot=i+1;
-        if(check_slots(first_slot)==true){break;}
-    }
+    // assign correct array to variable
+    mychoice = choices[last_position-1];
     
     // run validation
     for(i=0;i<5;i++)
     {
         move = mychoice[i];
-        if(move == 0){move = first_slot;}
-        // validate
-        if(check_slots(move)==true){break;}
+        if(move == 0)
+        {
+            // find first unused slot
+            for(ix=0;ix<9;ix++)
+            {
+                if(check_slots(i+1)==true)
+                {
+                    move = i + 1;
+                    break;
+                }
+            }
+            break;
+        }
+        else
+        {
+            // validate
+            if(check_slots(move)==true){break;}
+        }
     }
 
     // return
     return move;
+}
+
+bool GamePlay::check_slots(int position)
+{
+    // variables
+    bool available;
+
+    // initialized variables
+    available = false;
+
+    if(player_history[position-1] == " ")
+    {
+        available = true;
+    }
+
+    // return
+    return available;
 }
 
 void GamePlay::display_game_history(int time_elapsed)
@@ -273,60 +325,28 @@ void GamePlay::display_game_history(int time_elapsed)
     // display header
 	cout << "\n\n";
     cout << name_space << "Game History\n\n";
-	cout << "Total Games Played: " << games_played << "\n";
-    cout << "Total Play Time: " << tm_time << tm_type << "\n\n";
-    cout << "Last Game Results: \n\n";
-    cout << player_space << "Player" << game_space << "Position" << "\n";
+	cout << "Games Played: " << games_played << "\n";
+    cout << "Play Time: " << tm_time << tm_type << "\n\n";
+    cout << "Game Results: \n\n";
 
-    // iterate through loop for game data
-	for(i=0; i<9; i++)
-	{
-        // game data
-        game_position = position_history[i];
-        game_player = player_history[game_position-1];
-
-        // output to screen
-		cout << left_space << "Turn " << i + 1 << ": " << game_space << game_player << left_space << game_position << "\n";
-	}
-}
-
-void GamePlay::display_menu()const
-{
-    // menu
-    cout << "\nPick Your Poison\n\n";
-    cout << "0 - Automated Game\n";
-    cout << "1 - Live Against Computer\n";
-    cout << "2 - Live Two Player\n";
-    cout << "3 - Quit\n\n";
-    cout << "Your choice: ";
-}
-
-int * calcTime(int x)
-{
-    int i;
-    int quot_time;
-    int rem_time;
-    string time;
-
-    // initialize
-    i = 0; 
-    int auto_positions[] = {60,60,24,7,30,365};
-    static int times[7];
-
-    while(quot_time > 1)
+    // iterate through loop for each round
+    for(i=0;i<games_played;i++)
     {
+        cout << "Game: " << i + 1 << "\n";
+        cout << "Game Type: " << game_type_history[i] << "\n\n";
+        cout << player_space << "Player" << game_space << "Position" << "\n";
 
-        quot_time = x/auto_positions[i];
-        rem_time = rem_time % auto_positions[i];
-        
-        // add to time array
-        times[i]=rem_time;
+        // iterate through loop for game data
+        for(ix=0; ix<9; ix++)
+        {
+            // game data
+            game_position = game_history_position[i][ix];
+            game_player = game_history_player[i][game_position-1];
 
-        // increment
+            // output to screen
+            cout << left_space << "Turn " << ix + 1 << ": " << game_space << game_player << left_space << game_position << "\n";
+        }
     }
-
-    // return
-    return times;
 }
 
 void StringExtension::strToUpper(string &str)
@@ -363,4 +383,32 @@ void StringExtension::strFirstLetter(string &str)
     {
         str[i]=(i==0)?str[i]=toupper(str[i]):str[i]=tolower(str[i]);
     }
+}
+
+int * calcTime(int x)
+{
+    int i;
+    int quot_time;
+    int rem_time;
+    string time;
+
+    // initialize
+    i = 0; 
+    int auto_positions[] = {60,60,24,7,30,365};
+    static int times[7];
+
+    while(quot_time > 1)
+    {
+
+        quot_time = x/auto_positions[i];
+        rem_time = rem_time % auto_positions[i];
+        
+        // add to time array
+        times[i]=rem_time;
+
+        // increment
+    }
+
+    // return
+    return times;
 }
