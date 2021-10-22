@@ -35,10 +35,10 @@ class GamePlay
         void display_menu()const;
         void display_turn_info()const;
         void update_turn_history(string current_player, int position, int turn_count);
-        void update_game_history(int game_count, string game_type);
+        void update_game_history(int game_count, int mode);
         void display_game_history(int time_elapsed);
         void clear_game_history();
-        
+
     private:
         int games_played;
         int turn_number;

@@ -22,7 +22,6 @@ int main()
 	int position;
 	double tm_elapsed;
 	string play_again;
-	string game_type;
 	string first_player;
 	string current_player;
 
@@ -67,14 +66,10 @@ int main()
 
 			// continue until chooser picks x or o
 			} while (first_player != "X" && first_player != "O");
-
-			// set game type
-			game_type=(mode == 1)?"Player Against Computer":"Two Player";
 		}
 		else if (mode == 0)
 		{
 			first_player = "X";
-			game_type = "Automated";
 		}
 		else
 		{
@@ -95,8 +90,8 @@ int main()
 		// game runs until board is full
 		do
 		{
-			// display round number
-			cout << "\nRound " << turn_count + 1 << "\n";
+			// display round
+			cout << "Round " << turn_count + 1 << "\n\n";
 
 			// get current player
 			current_player = game.get_player();
@@ -131,7 +126,6 @@ int main()
 				// automated choice from array and output text
 				position = auto_positions[turn_count];
 			}
-
 			
 			// update turn history
 			play.update_turn_history(current_player, position, turn_count);
@@ -149,7 +143,7 @@ int main()
 		} while (game.game_over() == false);
 
 		// update game history
-		play.update_game_history(game_count, game_type);
+		play.update_game_history(game_count, mode);
 
 		// update game count
 		game_count++;

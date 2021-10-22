@@ -27,18 +27,18 @@ void TicTacToe::display_board() const
     string g_sp;
 
     // initialize variables
-    g_name = string(19,' ') + "Tic-Tac-Toe\n";
+    g_name = string(7,' ') + "Tic-Tac-Toe\n";
     g_col = "|";
-    g_row = string(16,' ') + string(17,'_') + "\n\n";
-    g_left = string(15,' ');
-    g_sp = string(2,' ');
+    g_row = string(25,'_') + "\n\n";
+    g_left = string(20,' ');
+    g_sp = string(3,' ');
 
     // pre-set up
-    cout<<"\n";
-    cout<<g_name;
+    cout << "\n";
+    cout << g_left << g_name;
 
     // add divider, start first row
-    cout << g_row;
+    cout << g_left << g_row;
     cout << g_left;
 
     // populate board
@@ -50,7 +50,7 @@ void TicTacToe::display_board() const
         {
             // end row, add divider
             cout << g_col << "\n";
-            cout << g_row;
+            cout << g_left << g_row;
 
             // start new row
             if(i != 8){cout<<g_left;}
@@ -160,17 +160,35 @@ void GamePlay::update_turn_history(string current_player, int position, int turn
 void GamePlay::display_turn_info()const
 {
 	// display turn data
-	cout << "\nTurn: " << turn_number << "\n";
+    cout << "\nLast Turn\n";
+	cout << "Turn: " << turn_number << "\n";
 	cout << "Player: " << last_player<< "\n";
 	cout << "Last Move: " << last_position << "\n\n";
 }
 
-void GamePlay::update_game_history(int game_count, string game_type)
+void GamePlay::update_game_history(int game_count, int mode)
 {
+    // variables
+    string game_type;
+
+    // get game type
+    if(mode == 0)
+    {
+        game_type = "Automated";
+    }
+    else if(mode == 1)
+    {
+        game_type = "Player Against Computer";
+    }
+    else
+    {
+        game_type = "Two Player";
+    }
+
     // update game history vectors
+    game_type_history.push_back(game_type);
     game_history_player.push_back(player_history);
     game_history_position.push_back(move_history);
-    game_type_history.push_back(game_type);
     games_played = game_count+1;
 }
 
@@ -261,6 +279,7 @@ int GamePlay::get_next_move()
             // find first unused slot
             for(ix=0;ix<9;ix++)
             {
+                // validate each slot
                 if(check_slots(i+1)==true)
                 {
                     move = i + 1;
@@ -302,21 +321,54 @@ void GamePlay::display_game_history(int time_elapsed)
     // variables
     int i;
     int ix;
-    int iy;
+    int ind;
+    int hpla;
+    int hpos;
+    int game_length;
+    int name_length;
     int game_position;
     double tm_time;
     string game_player;
-    string name_space;
     string left_space;
-    string player_space;
-    string game_space;
+    string na_space;
+    string turn_sp;
+    string hplayer_sp;
+    string hpos_sp;
+    string pla_sp1;
+    string pla_sp2;
+    string pos_sp1;
+    string pos_sp2;
     string tm_type;
+    string pos_test;
 
-    // initialized variables
-    left_space = string(10,' ');
-    name_space = string(16,' ');
-    player_space = string(19,' ');
-    game_space = string(3,' ');
+    // structural
+    ind = 12;
+    left_space = string(ind,' ');
+    turn_sp = string(7,' ');
+
+    // headers - distance from turn space
+    hpla = 3;
+    hpos = 4;
+    hplayer_sp = string(hpla,' ');
+    hpos_sp = string(hpos,' ');
+
+    // total length of game
+    game_length = ind + 7 + hpla + 6 + hpos + 8;
+
+    // indent name
+    name_length = ((game_length - ind) - 12) / 2;
+    na_space = string(name_length,' ');
+
+    // constants: spaces on either side of player name to keep centered with Player header
+    pla_sp1 = hplayer_sp + string(2,' ');
+    pla_sp2 = string(3,' ');
+
+    // constants: spaces on left side of position number to keep centered with Position header
+    pos_sp1 = hpos_sp + string(3,' ');
+    pos_sp2 = string(4,' ');
+
+    // test
+    pos_test = string(game_length,'_');
 
     // get time math
     tm_time = (time_elapsed >= 60) ? time_elapsed/60 : time_elapsed;
@@ -324,17 +376,19 @@ void GamePlay::display_game_history(int time_elapsed)
 
     // display header
 	cout << "\n\n";
-    cout << name_space << "Game History\n\n";
+    cout << left_space << na_space << "Game History\n\n";
 	cout << "Games Played: " << games_played << "\n";
     cout << "Play Time: " << tm_time << tm_type << "\n\n";
-    cout << "Game Results: \n\n";
+    cout << "Game Results:\n";
 
     // iterate through loop for each round
     for(i=0;i<games_played;i++)
     {
-        cout << "Game: " << i + 1 << "\n";
-        cout << "Game Type: " << game_type_history[i] << "\n\n";
-        cout << player_space << "Player" << game_space << "Position" << "\n";
+        cout << "\n";
+        cout << left_space << "Game: " << i + 1 << "\n";
+        cout << left_space << "Type: " << game_type_history[i] << "\n\n";
+        //cout << pos_test << "\n";
+        cout << left_space << turn_sp << hplayer_sp << "Player" << hpos_sp << "Position" << "\n";
 
         // iterate through loop for game data
         for(ix=0; ix<9; ix++)
@@ -344,7 +398,9 @@ void GamePlay::display_game_history(int time_elapsed)
             game_player = game_history_player[i][game_position-1];
 
             // output to screen
-            cout << left_space << "Turn " << ix + 1 << ": " << game_space << game_player << left_space << game_position << "\n";
+            cout << left_space << "Turn " << ix + 1 << ":";
+            cout << pla_sp1 << game_player << pla_sp2;
+            cout << pos_sp1 << game_position << pos_sp2 << "\n";
         }
     }
 }
