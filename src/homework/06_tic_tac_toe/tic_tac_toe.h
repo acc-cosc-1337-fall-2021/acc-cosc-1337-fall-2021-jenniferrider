@@ -15,6 +15,7 @@ class TicTacToe
         void mark_board(int position);
         void display_board()const;
         string get_player()const;
+        string get_winner();
         
     private:
         // variables
@@ -25,6 +26,11 @@ class TicTacToe
         bool check_board_full();
         void set_next_player();
         void clear_board();
+        string winner;
+        bool check_column_win();
+        bool check_row_win();
+        bool check_diagonal_win();
+        void set_winner();
 };
 
 class GamePlay

@@ -100,8 +100,108 @@ void TicTacToe::clear_board()
 
 bool TicTacToe::game_over()
 {
-    // return check board full function return 
+    // check if board is full
+    check_board_full();
+
+    // check for column win
+
+
+    // check for row win
+
+
+    // check for diagnoal win
+
+
     return check_board_full();
+}
+
+bool TicTacToe::check_column_win()
+{
+    // variables
+    int i;
+    bool you_win;
+    string player_move;
+
+    // initialized variables
+    you_win = false;
+    string players[2]={"X","O"};
+
+    for(i=0;i<2;i++)
+    {
+        player_move = players[i];
+    }
+    // 0, 3, 6; 1, 4, 7; 2, 5, 8
+    if(pegs[0]=="X" && pegs[3] == "X" && pegs[6] == "X")
+    {
+        // true
+        you_win = true;
+    }
+    else if(pegs[1]=="X" && pegs[4] == "X" && pegs[7] == "X")
+    {
+        //true
+        you_win = true;
+    }
+    else if(pegs[2]=="X" && pegs[5] == "X" && pegs[8] == "X")
+    {
+        //true
+        you_win = true;
+    }
+
+    // return
+    return you_win;
+}
+
+bool TicTacToe::check_row_win()
+{
+    // variables
+    bool you_win;
+
+    // initialized variables
+    you_win = false;
+
+    //0, 1, 2; 3, 4, 5; 6, 7, 8
+    if(pegs[0]=="X" && pegs[1] == "X" && pegs[2] == "X")
+    {
+        // true
+        you_win = true;
+    }
+    else if(pegs[3]=="X" && pegs[4] == "X" && pegs[5] == "X")
+    {
+        //true
+        you_win = true;
+    }
+    else if(pegs[6]=="X" && pegs[7] == "X" && pegs[8] == "X")
+    {
+        //true
+        you_win = true;
+    }
+
+    // return
+    return you_win;
+}
+
+bool TicTacToe::check_diagonal_win()
+{
+    // variables
+    bool you_win;
+
+    // initialized variables
+    you_win = false;
+
+    //0, 4, 8; 2, 4, 6;
+    if(pegs[0]=="X" && pegs[4] == "X" && pegs[8] == "X")
+    {
+        // true
+        you_win = true;
+    }
+    else if(pegs[2]=="X" && pegs[4] == "X" && pegs[6] == "X")
+    {
+        //true
+        you_win = true;
+    }
+
+    // return
+    return you_win;
 }
 
 bool TicTacToe::check_board_full()
