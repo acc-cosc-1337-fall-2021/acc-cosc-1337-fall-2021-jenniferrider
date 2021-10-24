@@ -100,6 +100,17 @@ void TicTacToe::set_next_player()
     player = (get_player() == "X") ? "O" : "X";
 }
 
+string TicTacToe::get_winner()
+{
+    return winner;
+}
+
+void TicTacToe::set_winner()
+{
+    // set winner
+    winner = (get_player() == "X") ? "O" : "X";
+}
+
 void TicTacToe::clear_board()
 {
     // variables
@@ -114,8 +125,115 @@ void TicTacToe::clear_board()
 
 bool TicTacToe::game_over()
 {
-    // return check board full function return 
-    return check_board_full();
+    // variables
+    bool game_result;
+
+    // initialize variables
+    game_result = false;
+
+    // check for row win
+    if(check_column_win() == true || check_row_win() == true || check_diagonal_win() == true)
+    {
+        set_winner();
+        game_result = true;
+    }
+    else if(check_board_full() == true)
+    {
+        winner = "C";
+        game_result = true;
+    }
+
+    // return
+    return game_result;
+}
+
+bool TicTacToe::check_column_win()
+{
+    // variables
+    bool you_win;
+    string last_player;
+
+    // initialized variables
+    you_win = false;
+    last_player = (get_player() == "X") ? "O" : "X";
+
+    // options: 0, 3, 6; 1, 4, 7; 2, 5, 8
+    if(pegs[0]==last_player && pegs[3] == last_player && pegs[6] == last_player)
+    {
+        // true
+        you_win = true;
+    }
+    else if(pegs[1]==last_player && pegs[4] == last_player && pegs[7] == last_player)
+    {
+        //true
+        you_win = true;
+    }
+    else if(pegs[2]==last_player && pegs[5] == last_player && pegs[8] == last_player)
+    {
+        //true
+        you_win = true;
+    }
+
+    // return
+    return you_win;
+}
+
+bool TicTacToe::check_row_win()
+{
+    //cout << "Check Row Function\n";
+    // variables
+    bool you_win;
+    string last_player;
+
+    // initialized variables
+    you_win = false;
+    last_player = (get_player() == "X") ? "O" : "X";
+
+    //Options: 0, 1, 2; 3, 4, 5; 6, 7, 8
+    if(pegs[0]==last_player && pegs[1] == last_player && pegs[2] == last_player)
+    {
+        // true
+        you_win = true;
+    }
+    else if(pegs[3]==last_player && pegs[4] == last_player && pegs[5] == last_player)
+    {
+        //true
+        you_win = true;
+    }
+    else if(pegs[6]==last_player && pegs[7] == last_player && pegs[8] == last_player)
+    {
+        //true
+        you_win = true;
+    }
+
+    // return
+    return you_win;
+}
+
+bool TicTacToe::check_diagonal_win()
+{
+    // variables
+    bool you_win;
+    string last_player;
+
+    //initialize variables
+    you_win = false;
+    last_player = (get_player() == "X") ? "O" : "X";
+
+    //0, 4, 8; 2, 4, 6;
+    if(pegs[0] == last_player && pegs[4] == last_player && pegs[8] == last_player)
+    {
+        // true
+        you_win = true;
+    }
+    else if(pegs[2] == last_player && pegs[4] == last_player && pegs[6] == last_player)
+    {
+        //true
+        you_win = true;
+    }
+
+    // return
+    return you_win;
 }
 
 bool TicTacToe::check_board_full()

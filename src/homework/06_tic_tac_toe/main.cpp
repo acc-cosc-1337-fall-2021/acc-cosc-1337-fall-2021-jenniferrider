@@ -13,6 +13,7 @@ int main(){
 	int position;
 	string play_again;
 	string first_player;
+	string game_winner;
 
 	// initialized variables
 	play_again = "y";
@@ -33,10 +34,8 @@ int main(){
 			
 		} while (first_player != "X" && first_player != "O");
 
-		// start game
+		// start game and display board
 		game.start_game(first_player);
-
-		// display board
 		game.display_board();
 		
 		// game runs until board is full
@@ -46,29 +45,34 @@ int main(){
 			cout<<"\nSelect a position between 1 and 9: ";
 			cin>>position;
 
-			// mark position on board
+			// mark position on board and display marked board
 			game.mark_board(position);
-
-			// display board
 			game.display_board();
 
-		// check to see if all positions are filled; if true, end game
+		// check to see if all positions are filled or if winner has been found; if true, end game
 		} while (game.game_over() == false);
 
 		// output
-		cout << "Game Over\n";
+		cout << "Game Over\n\n";
+
+		// check for winner
+		game_winner = game.get_winner();
+		if(game_winner == "C")
+		{
+			cout << "It's a tie!\n";
+		}
+		else
+		{
+			cout << "The winner is " << game_winner << "!  Congratulations!\n\n";
+		}
 
 		// reset board using start_game function
 		game.start_game(first_player);
 
 		// user interaction - play again
-		do
-		{
-			cout << "\nDo you want to play again?  Enter 'y' for 'yes' or 'n' for 'no': ";
-			cin >> play_again;
-			strToLower(play_again);
-
-		} while (play_again != "y" && play_again != "n");
+		cout << "\nDo you want to play again?  Enter 'y' for 'yes' or 'n' for 'no': ";
+		cin >> play_again;
+		strToLower(play_again);
 
 	} while (play_again == "y");
 
