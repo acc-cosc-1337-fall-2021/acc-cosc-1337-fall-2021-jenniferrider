@@ -20,16 +20,16 @@ class TicTacToe
     private:
         // variables
         string player;
+        string winner;
         vector<string> pegs = vector<string>(9," ");
 
         // functions
-        bool check_board_full();
-        void set_next_player();
-        void clear_board();
-        string winner;
         bool check_column_win();
         bool check_row_win();
         bool check_diagonal_win();
+        bool check_board_full();
+        void clear_board();
+        void set_next_player();
         void set_winner();
 };
 
@@ -51,7 +51,7 @@ class GamePlay
         int last_position;
         string last_player;
         bool check_slots(int position);
-        bool check_slots2(string current_player, int position);
+        bool check_player(string current_player, int position);
         int board_check();
         vector<string> game_type_history;                           // track game type for each game played: automated, against computer, two player
         vector<string> game_winner_history;                         // track winner for each game played

@@ -440,7 +440,7 @@ int GamePlay::get_next_move()
             }
             else
             {
-                if(check_slots2(current_player,move)==true)
+                if(check_player(current_player,move)==true)
                 {
                     if(turn_number == 3 || turn_number == 5 || turn_number == 7)
                     {
@@ -473,7 +473,7 @@ bool GamePlay::check_slots(int position)
     return available;
 }
 
-bool GamePlay::check_slots2(string current_player, int position)
+bool GamePlay::check_player(string current_player, int position)
 {
     // variables
     bool is_player;
@@ -492,57 +492,106 @@ bool GamePlay::check_slots2(string current_player, int position)
 
 void GamePlay::display_game_history(int time_elapsed)
 {
+    // constants
+    int const turn_ind = 7;
+
     // variables
     int i;
     int ix;
-    int ind;
-    int hpla;
-    int hpos;
-    int game_length;
-    int name_length;
+    int game_ind;
+    int table_ind;
+    int title_ind;
+    int pla_ind;
+    int pos_ind;
+    int game_space;
+    int table_space;
+    int screen_space;
+    int top_ln;
+    int table_top_ln;
     int game_position;
     double tm_time;
-    string game_player;
-    string left_space;
-    string na_space;
-    string turn_sp;
+
+    // string names
+    string header_title;
+    string header_row_pla;
+    string header_row_pos;
+
+    // string space
+    string table_indent_sp;
     string hplayer_sp;
     string hpos_sp;
+    string header_indent_sp;
+    string line_indent_sp;
+    string title_indent_sp;
+    string table_sp;
+    string table_header_sp;
+    string game_sp;
+    string screen_sp;
     string pla_sp1;
     string pla_sp2;
     string pos_sp1;
     string pos_sp2;
     string tm_type;
-    string pos_test;
+    string game_player;
 
-    // structural
-    ind = 12;
-    left_space = string(ind,' ');
-    turn_sp = string(7,' ');
+    // underlining
+    string top_line_sp;
+    string table_line_sp;
 
-    // headers - distance from turn space
-    hpla = 3;
-    hpos = 4;
-    hplayer_sp = string(hpla,' ');
-    hpos_sp = string(hpos,' ');
+    // game size: game_space
+    // table size: table_space
 
-    // total length of game
-    game_length = ind + 7 + hpla + 6 + hpos + 8;
+    // header text
+    header_title = "Game History";
+    header_row_pla = "Player";
+    header_row_pos = "Position";
 
-    // indent name
-    name_length = ((game_length - ind) - 12) / 2;
-    na_space = string(name_length,' ');
+    // size of left indent for table, left indent of player and postion on header row
+    // these are changeable
+    game_ind = 2;
+    table_ind = 10;
+    pla_ind = 3;
+    pos_ind = 4;
 
-    // constants: spaces on either side of player name to keep centered with Player header
-    pla_sp1 = hplayer_sp + string(2,' ');
-    pla_sp2 = string(3,' ');
+    // lengths in game
+    table_space = turn_ind + pla_ind + pos_ind + header_row_pla.size() + header_row_pos.size();
+    screen_space = game_ind + table_ind + table_space;
+    game_space = screen_space - game_ind;
+
+    // game history title indent
+    title_ind = (table_space - header_title.size()) / 2;
+
+    // top line underlining space
+    top_ln = table_space + (table_ind * 2);
+    table_top_ln = table_space + 4;
+
+    // base indents
+    header_indent_sp = string(game_ind,' ');
+    table_indent_sp = header_indent_sp + string(table_ind,' ');
+    line_indent_sp = string(table_ind,' ');
+
+    // specific indents
+    title_indent_sp = table_indent_sp + string(title_ind,' ');
+    table_header_sp = table_indent_sp + string(turn_ind,' ');
+    hplayer_sp = string(pla_ind,' ');
+    hpos_sp = string(pos_ind,' ');
+
+    // constants: spaces on either side of player name (X or O) to keep centered with Player header
+    pla_sp1 = hplayer_sp + string((header_row_pla.size()) / 2 - 1,' ');
+    pla_sp2 = string((header_row_pla.size()) / 2,' ');
 
     // constants: spaces on left side of position number to keep centered with Position header
-    pos_sp1 = hpos_sp + string(3,' ');
-    pos_sp2 = string(4,' ');
+    pos_sp1 = hpos_sp + string((header_row_pos.size()) / 2 - 1,' ');
+    pos_sp2 = string((header_row_pos.size()) / 2,' ');
 
-    // test
-    pos_test = string(game_length,'_');
+    // decorative underlining
+    top_line_sp = header_indent_sp + string(top_ln,'_');
+    table_line_sp = line_indent_sp + string(table_top_ln,'_');
+
+    // underlines for sizing and testing
+    table_sp = string(table_space,'_');
+    screen_sp = string(screen_space, '_');
+    game_sp = string(game_space,'_');
 
     // get time math
     tm_time = (time_elapsed >= 60) ? time_elapsed/60 : time_elapsed;
@@ -550,41 +599,51 @@ void GamePlay::display_game_history(int time_elapsed)
 
     // display header
 	cout << "\n\n";
-    cout << left_space << na_space << "Game History\n\n";
-	cout << "Games Played: " << games_played << "\n";
-    cout << "Play Time: " << tm_time << tm_type << "\n\n";
-    cout << "Game Results:\n";
+    cout << top_line_sp << "\n\n";
+    cout << title_indent_sp << header_title << "\n\n";
+	cout << header_indent_sp << "Games Played: " << games_played << "\n";
+    cout << header_indent_sp << "Play Time: " << tm_time << tm_type << "\n\n";
+    cout << header_indent_sp << "Game Results\n\n";
 
     // iterate through loop for each round
     for(i=0;i<games_played;i++)
     {
-        cout << "\n";
-        cout << left_space << "Game: " << i + 1 << "\n";
-        cout << left_space << "Type: " << game_type_history[i] << "\n";
-        cout << left_space << "Winner: " << game_winner_history[i] << "\n\n";
-        //cout << pos_test << "\n";
-        cout << left_space << turn_sp << hplayer_sp << "Player" << hpos_sp << "Position" << "\n";
+        // game play table header
+        cout << table_line_sp << "\n\n";
+        cout << table_indent_sp << "Game " << i + 1 << "\n";
+        cout << table_indent_sp << "Type: " << game_type_history[i] << "\n";
+        cout << table_indent_sp << "Winner: " << game_winner_history[i] << "\n\n";
+        //cout << game_space_test << "\n";
 
-        // iterate through loop for game data
+        // table row header
+        cout << table_header_sp;
+        cout << hplayer_sp << header_row_pla;
+        cout << hpos_sp << header_row_pos << "\n";
+
+        // iterate through loop for game data for table
         for(ix=0; ix<game_history_player[i].size(); ix++)
         {
-            // game data
+            // get game position
             game_position = game_history_position[i][ix];
             if(game_position > 0)
             {
+                // get player name
                 game_player = game_history_player[i][game_position-1];
 
                 // output to screen
-                cout << left_space << "Turn " << ix + 1 << ":";
+                cout << table_indent_sp << "Turn " << ix + 1 << ":";
                 cout << pla_sp1 << game_player << pla_sp2;
                 cout << pos_sp1 << game_position << pos_sp2 << "\n";
             }
             else
             {
+                // break if position is zero which indicates no moves left
                 break;
             }
         }
     }
+    cout << "\n";
+    cout << top_line_sp << "\n\n";
 }
 
 void StringExtension::strToUpper(string &str)
