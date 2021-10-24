@@ -9,7 +9,7 @@ TEST_CASE("Verify Test Configuration", "verification") {
 	REQUIRE(true == true);
 }
 
-TEST_CASE("Verify Tic-Tac-Toe Test Case 1", "Test Player Set to X")
+TEST_CASE("Verify Tic-Tac-Toe Test Case 1", "Test First Player Set to X")
 {
 	// class declaration
 	TicTacToe game;
@@ -56,7 +56,7 @@ TEST_CASE("Verify Tic-Tac-Toe Test Case 1", "Test Player Set to X")
 	REQUIRE(i == 9);
 }
 
-TEST_CASE("Verify Tic-Tac-Toe Test Case 2", "Test Player Set to O")
+TEST_CASE("Verify Tic-Tac-Toe Test Case 2", "Test First Player Set to O")
 {
 	// class declaration
 	TicTacToe game;
@@ -144,6 +144,7 @@ TEST_CASE("Verify Tic-Tac-Toe Test Case 3", "Tie Game - No Winner")
 		
 		// iterate i as a counter to verify the game runs 9 times and fetch position from array
 		i++;
+
 	} while (game_done == false);
 
 	// validates game iterated nine times
@@ -179,25 +180,23 @@ TEST_CASE("Verify Tic-Tac-Toe Test Case 4", "Winner - Test Column Win 1,4,7")
 		game.mark_board(position);
 		game_done = game.game_over();
 
-		if(i < 8)
+		// validate game over
+		if(game_done == true)
 		{
-			// validates that all turns before the last one game_over returns false
-			if(game_done == true)
-			{
-				// turn count should be no higher than four for testing
-				REQUIRE(i == 4);
+			// turn count should be no higher than four for testing
+			REQUIRE(i == 4);
 
-				// validate that if winner found, it's X (first player)
-					game_winner = game.get_winner();
-					REQUIRE(game_winner == "X");
-			}
+			// validate that if winner found, it's X (first player)
+			game_winner = game.get_winner();
+			REQUIRE(game_winner == "X");
 		}
 		
-		// iterate i as a counter to verify the game runs 9 times and fetch position from array
+		// iterate i as a counter to verify the number of turns and iterate positions on board
 		i++;
+
 	} while (game_done == false);
 
-	// validates game iterated nine times
+	// validates game iterated six times total (five for gameplay)
 	REQUIRE(i == 5);
 }
 
@@ -230,25 +229,23 @@ TEST_CASE("Verify Tic-Tac-Toe Test Case 5", "Winner - Test Column Win 2,5,8")
 		game.mark_board(position);
 		game_done = game.game_over();
 
-		if(i < 8)
+		// validate game over
+		if(game_done == true)
 		{
-			// validates that all turns before the last one game_over returns false
-			if(game_done == true)
-			{
-				// turn count should be no higher than four for testing
-				REQUIRE(i == 4);
+			// turn count should be no higher than four for testing
+			REQUIRE(i == 4);
 
-				// validate that if winner found, it's X (first player)
-					game_winner = game.get_winner();
-					REQUIRE(game_winner == "X");
-			}
+			// validate that if winner found, it's X (first player)
+			game_winner = game.get_winner();
+			REQUIRE(game_winner == "X");
 		}
 		
-		// iterate i as a counter to verify the game runs 9 times and fetch position from array
+		// iterate i as a counter to verify the number of turns and iterate positions on board
 		i++;
+
 	} while (game_done == false);
 
-	// validates game iterated nine times
+	// validates game iterated six times total (five for gameplay)
 	REQUIRE(i == 5);
 }
 
@@ -281,29 +278,27 @@ TEST_CASE("Verify Tic-Tac-Toe Test Case 6", "Winner - Test Column Win 3,6,9")
 		game.mark_board(position);
 		game_done = game.game_over();
 
-		if(i < 8)
+		// validate game over
+		if(game_done == true)
 		{
-			// validates that all turns before the last one game_over returns false
-			if(game_done == true)
-			{
-				// turn count should be no higher than four for testing
-				REQUIRE(i == 4);
+			// turn count should be no higher than four for testing
+			REQUIRE(i == 4);
 
-				// validate that if winner found, it's X (first player)
-					game_winner = game.get_winner();
-					REQUIRE(game_winner == "X");
-			}
+			// validate that if winner found, it's X (first player)
+			game_winner = game.get_winner();
+			REQUIRE(game_winner == "X");
 		}
 		
-		// iterate i as a counter to verify the game runs 9 times and fetch position from array
+		// iterate i as a counter to verify the number of turns and iterate positions on board
 		i++;
+
 	} while (game_done == false);
 
-	// validates game iterated nine times
+	// validates game iterated six times (five for gameplay)
 	REQUIRE(i == 5);
 }
 
-TEST_CASE("Verify Tic-Tac-Toe Test Case 7", "Winner - Test Row Win 1 - 3")
+TEST_CASE("Verify Tic-Tac-Toe Test Case 7", "Winner - Test Row Win 1,2,3")
 {
 	// class declaration
 	TicTacToe game;
@@ -332,29 +327,27 @@ TEST_CASE("Verify Tic-Tac-Toe Test Case 7", "Winner - Test Row Win 1 - 3")
 		game.mark_board(position);
 		game_done = game.game_over();
 
-		if(i < 8)
+		// validate game over
+		if(game_done == true)
 		{
-			// validates that all turns before the last one game_over returns false
-			if(game_done == true)
-			{
-				// turn count should be no higher than four for testing
-				REQUIRE(i == 4);
+			// turn count should be no higher than four for testing
+			REQUIRE(i == 4);
 
-				// validate that if winner found, it's X (first player)
-					game_winner = game.get_winner();
-					REQUIRE(game_winner == "X");
-			}
+			// validate that if winner found, it's X (first player)
+			game_winner = game.get_winner();
+			REQUIRE(game_winner == "X");
 		}
 		
-		// iterate i as a counter to verify the game runs 9 times and fetch position from array
+		// iterate i as a counter to verify the number of turns and iterate positions on board
 		i++;
+
 	} while (game_done == false);
 
-	// validates game iterated nine times
+	// validates game iterated six times (five for gameplay)
 	REQUIRE(i == 5);
 }
 
-TEST_CASE("Verify Tic-Tac-Toe Test Case 8", "Winner - Test Row Win 4 - 6")
+TEST_CASE("Verify Tic-Tac-Toe Test Case 8", "Winner - Test Row Win 4,5,6")
 {
 	// class declaration
 	TicTacToe game;
@@ -383,29 +376,27 @@ TEST_CASE("Verify Tic-Tac-Toe Test Case 8", "Winner - Test Row Win 4 - 6")
 		game.mark_board(position);
 		game_done = game.game_over();
 
-		if(i < 8)
+		// validate game over
+		if(game_done == true)
 		{
-			// validates that all turns before the last one game_over returns false
-			if(game_done == true)
-			{
-				// turn count should be no higher than four for testing
-				REQUIRE(i == 4);
+			// turn count should be no higher than four for testing
+			REQUIRE(i == 4);
 
-				// validate that if winner found, it's X (first player)
-					game_winner = game.get_winner();
-					REQUIRE(game_winner == "X");
-			}
+			// validate that if winner found, it's X (first player)
+			game_winner = game.get_winner();
+			REQUIRE(game_winner == "X");
 		}
 		
-		// iterate i as a counter to verify the game runs 9 times and fetch position from array
+		// iterate i as a counter to verify the number of turns and iterate positions on board
 		i++;
+
 	} while (game_done == false);
 
-	// validates game iterated nine times
+	// validates game iterated six times total (five for gameplay)
 	REQUIRE(i == 5);
 }
 
-TEST_CASE("Verify Tic-Tac-Toe Test Case 9", "Winner - Test Row Win 7 - 9")
+TEST_CASE("Verify Tic-Tac-Toe Test Case 9", "Winner - Test Row Win 7,8,9")
 {
 	// class declaration
 	TicTacToe game;
@@ -434,29 +425,24 @@ TEST_CASE("Verify Tic-Tac-Toe Test Case 9", "Winner - Test Row Win 7 - 9")
 		game.mark_board(position);
 		game_done = game.game_over();
 
-		if(i < 8)
+		if(game_done == true)
 		{
-			// validates that all turns before the last one game_over returns false
-			if(game_done == true)
-			{
-				// turn count should be no higher than four for testing
-				REQUIRE(i == 4);
+			// turn count should be no higher than four for testing
+			REQUIRE(i == 4);
 
-				// validate that if winner found, it's X (first player)
-					game_winner = game.get_winner();
-					REQUIRE(game_winner == "X");
-			}
+			// validate that if winner found, it's X (first player)
+			game_winner = game.get_winner();
+			REQUIRE(game_winner == "X");
 		}
-		
-		// iterate i as a counter to verify the game runs 9 times and fetch position from array
+
+		// iterate i as a counter to verify the number of turns and iterate positions on board
 		i++;
+
 	} while (game_done == false);
 
-	// validates game iterated nine times
+	// validates game iterated six times total (five for gameplay)
 	REQUIRE(i == 5);
 }
-
-
 
 TEST_CASE("Verify Tic-Tac-Toe Test Case 10", "Winner - Test Diagonal Win 1,5,9")
 {
@@ -487,27 +473,25 @@ TEST_CASE("Verify Tic-Tac-Toe Test Case 10", "Winner - Test Diagonal Win 1,5,9")
 		game.mark_board(position);
 		game_done = game.game_over();
 
-		if(i < 8)
+		if(game_done == true)
 		{
-			// validates that all turns before the last one game_over returns false
-			if(game_done == true)
-			{
-				// turn count should be no higher than four for testing
+			// turn count should be no higher than four for testing
 				REQUIRE(i == 4);
 
-				// validate that if winner found, it's X (first player)
-					game_winner = game.get_winner();
-					REQUIRE(game_winner == "X");
-			}
+			// validate that if winner found, it's X (first player)
+			game_winner = game.get_winner();
+			REQUIRE(game_winner == "X");
 		}
 		
-		// iterate i as a counter to verify the game runs 9 times and fetch position from array
+		// iterate i as a counter to verify the number of turns and iterate positions on board
 		i++;
+
 	} while (game_done == false);
 
-	// validates game iterated nine times
+	// validates game iterated six times total (five for gameplay)
 	REQUIRE(i == 5);
 }
+
 TEST_CASE("Verify Tic-Tac-Toe Test Case 11", "Winner - Test Diagonal Win 7,5,3")
 {
 	// class declaration
@@ -537,24 +521,21 @@ TEST_CASE("Verify Tic-Tac-Toe Test Case 11", "Winner - Test Diagonal Win 7,5,3")
 		game.mark_board(position);
 		game_done = game.game_over();
 
-		if(i < 8)
+		if(game_done == true)
 		{
-			// validates that all turns before the last one game_over returns false
-			if(game_done == true)
-			{
-				// turn count should be no higher than four for testing
+			// turn count should be no higher than four for testing
 				REQUIRE(i == 4);
 
-				// validate that if winner found, it's X (first player)
-					game_winner = game.get_winner();
-					REQUIRE(game_winner == "X");
-			}
+			// validate that if winner found, it's X (first player)
+			game_winner = game.get_winner();
+			REQUIRE(game_winner == "X");
 		}
-		
-		// iterate i as a counter to verify the game runs 9 times and fetch position from array
+
+		// iterate i as a counter to verify the number of turns and iterate positions on board
 		i++;
+
 	} while (game_done == false);
 
-	// validates game iterated nine times
+	// validates game iterated six times total (five for gameplay)
 	REQUIRE(i == 5);
 }
