@@ -20,18 +20,26 @@ int main()
 	int game_count;
 	int turn_count;
 	int position;
+	int * auto_positions;
+	int auto_game;
 	double tm_elapsed;
 	string play_again;
 	string first_player;
 	string current_player;
+	string game_winner;
 
 	// initialized variables
 	game_count = 0;
+	auto_game = 0;
 	play_again = "y";
-	int auto_positions[9] = {1,2,3,4,5,7,6,9,8};			// array for automated play
+	int game_positions[][9]={   {1,2,3,4,5,7,6,9,8},
+								{1,2,4,5,7,3,6,8,9},
+								{1,4,2,5,3,7,6,8,9},
+								{1,2,5,6,9,3,4,7,8}
+							};
 
-	// clear history
-	play.clear_game_history();
+	// clear game history
+	//play.clear_game_history();
 
 	// program information
 	cout << "\nWelcome to Tic-Tac-Toe!  This is a game everyone can play!\n";
@@ -69,7 +77,9 @@ int main()
 		}
 		else if (mode == 0)
 		{
+			//cout << "Auto: " << auto_game << "\n";
 			first_player = "X";
+			auto_positions = game_positions[auto_game];
 		}
 		else
 		{
@@ -142,8 +152,19 @@ int main()
 
 		} while (game.game_over() == false);
 
+		// check for winner
+		game_winner = game.get_winner();
+		if(game_winner == "C")
+		{
+			cout << "It's a tie!\n";
+		}
+		else
+		{
+			cout << "The winner is " << game_winner << "!\n\n";
+		}
+
 		// update game history
-		play.update_game_history(game_count, mode);
+		play.update_game_history(game_count, mode, game_winner);
 
 		// update game count
 		game_count++;
@@ -151,6 +172,13 @@ int main()
 		// clear board 
 		game.end_game();
 		play.clear_game_history();
+
+		if(mode == 0)
+		{
+			// update autogames
+			auto_game++;
+			if(auto_game == 4){ auto_game = 0;}
+		}
 
 		// user interaction - play again
 		cout << "\nDo you want to play again?  Enter 'y' for 'yes' or 'n' for 'no': ";

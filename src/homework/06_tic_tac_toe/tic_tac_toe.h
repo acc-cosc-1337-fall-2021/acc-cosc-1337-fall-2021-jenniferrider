@@ -41,7 +41,7 @@ class GamePlay
         void display_menu()const;
         void display_turn_info()const;
         void update_turn_history(string current_player, int position, int turn_count);
-        void update_game_history(int game_count, int mode);
+        void update_game_history(int game_count, int mode, string game_winner);
         void display_game_history(int time_elapsed);
         void clear_game_history();
 
@@ -51,7 +51,10 @@ class GamePlay
         int last_position;
         string last_player;
         bool check_slots(int position);
+        bool check_slots2(string current_player, int position);
+        int board_check();
         vector<string> game_type_history;                           // track game type for each game played: automated, against computer, two player
+        vector<string> game_winner_history;                         // track winner for each game played
         vector<int> move_history = vector<int>(9);				    // keeps turn history of single game
     	vector<string> player_history = vector<string>(9," ");		// tracks used slots
         vector< vector<int> > game_history_position;
