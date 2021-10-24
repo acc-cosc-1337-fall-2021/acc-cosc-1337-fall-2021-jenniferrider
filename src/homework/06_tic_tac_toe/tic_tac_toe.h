@@ -40,25 +40,29 @@ class GamePlay
         bool validate_position(int position);
         void display_menu()const;
         void display_turn_info()const;
-        void update_turn_history(string current_player, int position, int turn_count);
+        void display_winner(string game_winner);
+        void update_current_game(string current_player, int position, int turn_count);
         void update_game_history(int game_count, int mode, string game_winner);
         void display_game_history(int time_elapsed);
         void clear_game_history();
 
     private:
-        int games_played;
-        int turn_number;
+        // variables
         int last_position;
+        int turn_number;
+        int games_played;
         string last_player;
-        bool check_slots(int position);
-        bool check_player(string current_player, int position);
-        int board_check();
+        vector<int> game_moves = vector<int>(9);				    // keeps turn history of single game
+    	vector<string> player_moves = vector<string>(9," ");		// tracks used slots
         vector<string> game_type_history;                           // track game type for each game played: automated, against computer, two player
         vector<string> game_winner_history;                         // track winner for each game played
-        vector<int> move_history = vector<int>(9);				    // keeps turn history of single game
-    	vector<string> player_history = vector<string>(9," ");		// tracks used slots
-        vector< vector<int> > game_history_position;
-        vector< vector<string> > game_history_player;
+        vector< vector<int> > game_position_history;                // tracks position history of all games
+        vector< vector<string> > game_player_history;               // tracks player history of all games
+
+        // functions
+        int board_check();
+        bool check_slots(int position, string current_player = " ");
+        bool check_player(string current_player, int position);
 };
 
 class StringExtension

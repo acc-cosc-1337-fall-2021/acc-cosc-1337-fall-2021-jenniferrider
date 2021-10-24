@@ -20,8 +20,8 @@ int main()
 	int game_count;
 	int turn_count;
 	int position;
-	int * auto_positions;
 	int auto_game;
+	int * auto_positions;
 	double tm_elapsed;
 	string play_again;
 	string first_player;
@@ -35,11 +35,14 @@ int main()
 	int game_positions[][9]={   {1,2,3,4,5,7,6,9,8},
 								{1,2,4,5,7,3,6,8,9},
 								{1,4,2,5,3,7,6,8,9},
-								{1,2,5,6,9,3,4,7,8}
+								{1,2,5,6,9,3,4,7,8},
+								{3,2,1,5,4,8,6,7,9},
+								{9,8,3,4,1,5,2,6,7},
+								{5,4,7,1,8,2,9,6,3},
+								{6,7,1,3,5,4,9,2,6},
+								{7,1,5,4,3,2,6,9,8},
+								{3,1,6,4,9,2,5,7,8}
 							};
-
-	// clear game history
-	//play.clear_game_history();
 
 	// program information
 	cout << "\nWelcome to Tic-Tac-Toe!  This is a game everyone can play!\n";
@@ -137,10 +140,8 @@ int main()
 				position = auto_positions[turn_count];
 			}
 			
-			// update turn history
-			play.update_turn_history(current_player, position, turn_count);
-
-			// display turn info
+			// update turn history and display turn info
+			play.update_current_game(current_player, position, turn_count);
 			play.display_turn_info();
 
 			// mark position and display board
@@ -152,16 +153,9 @@ int main()
 
 		} while (game.game_over() == false);
 
-		// check for winner
+		// get and display winner
 		game_winner = game.get_winner();
-		if(game_winner == "C")
-		{
-			cout << "It's a tie!\n";
-		}
-		else
-		{
-			cout << "The winner is " << game_winner << "!\n\n";
-		}
+		play.display_winner(game_winner);
 
 		// update game history
 		play.update_game_history(game_count, mode, game_winner);
@@ -177,7 +171,7 @@ int main()
 		{
 			// update autogames
 			auto_game++;
-			if(auto_game == 4){ auto_game = 0;}
+			if(auto_game == 10){ auto_game = 0;}
 		}
 
 		// user interaction - play again
@@ -190,9 +184,6 @@ int main()
 	// end time and get difference
 	time_t end = time(NULL);
 	tm_elapsed = end - start;
-
-	// clear console
-	//system("clear");
 
 	// display game history
 	play.display_game_history(tm_elapsed);

@@ -273,16 +273,6 @@ void GamePlay::display_menu()const
     cout << "Your choice: ";
 }
 
-void GamePlay::update_turn_history(string current_player, int position, int turn_count)
-{
-    // update game history
-    player_history[position-1]=current_player;
-    move_history[turn_count]=position;
-    turn_number = turn_count + 1;
-    last_position = position;
-    last_player = current_player;
-}
-
 void GamePlay::display_turn_info()const
 {
 	// display turn data
@@ -292,57 +282,17 @@ void GamePlay::display_turn_info()const
 	cout << "Last Move: " << last_position << "\n\n";
 }
 
-void GamePlay::update_game_history(int game_count, int mode,string game_winner)
+void GamePlay::display_winner(string game_winner)
 {
-    // variables
-    string game_type;
-
-    //initialize variables
-    vector<int> position_history(9);
-
-    // get game type
-    if(mode == 0)
-    {
-        game_type = "Automated";
-    }
-    else if(mode == 1)
-    {
-        game_type = "Player Against Computer";
-    }
-    else
-    {
-        game_type = "Two Player";
-    }
-
-    // change winner history
-    game_winner=(game_winner == "C")?"Tie":game_winner;
-
-    // update game history vectors
-    game_type_history.push_back(game_type);
-    game_winner_history.push_back(game_winner);
-    game_history_player.push_back(player_history);
-    game_history_position.push_back(move_history);
-  
-    // games played
-    games_played = game_count+1;
-}
-
-void GamePlay::clear_game_history()
-{
-    // variables
-    int i;
-    string slot;
-
-    // initialize variables
-    slot = " ";
-    
-    // clear position and player history
-    for(i=0;i<9;i++)
-    {
-        move_history[i] = 0;
-        player_history[i] = " ";
-    }
-    cout << "Player history cleared\n";
+    // display winner text
+	if(game_winner == "C")
+	{
+		cout << "It's a tie!\n";
+	}
+	else
+	{
+		cout << "The winner is " << game_winner << "!\n\n";
+	}
 }
 
 bool GamePlay::validate_position(int position)
@@ -386,15 +336,7 @@ int GamePlay::get_next_move()
     // variables
     int i;
     int ix;
-    int iy;
     int move;
-    int turn;
-    int first_slot;
-    string current_player;
-
-    // initialized variables
-    current_player = last_player;
-    cout << "Curent player: " << current_player << "\n";
 
     // new array
     int * mychoice;
@@ -409,42 +351,39 @@ int GamePlay::get_next_move()
                     {5,7,9,2},
                     {5,8,6}
                     };
+    
     // assign correct array to variable
     mychoice = choices[last_position-1];
 
-    // get first slot
-    for(ix=0;ix<9;ix++)
-    {
-        if(check_slots(ix+1)==true)
-        {
-            first_slot = ix+1;
-        }
-    }
-
-    // run validation
+    // get next move and run validation
     for(i=0;i<8;i++)
     {
         move = mychoice[i];
         if(move == 0)
         {
             // find first unused slot
-            move = first_slot;
+            for(ix=0;ix<9;ix++)
+            {
+                move = ix + 1;
+                if(check_slots(move)==true)
+                {
+                    // first slot is valid, break from inner loop
+                    break;
+                }
+            }
+
+            // move_pick is valid, break from outer loop
             break;
         }
         else
         {
-            // validate
-            if(check_slots(move)==true)
+            if(check_slots(move)==false)
             {
-                break;
-            }
-            else
-            {
-                if(check_player(current_player,move)==true)
+                if(turn_number == 3 || turn_number == 5 || turn_number == 7)
                 {
-                    if(turn_number == 3 || turn_number == 5 || turn_number == 7)
+                    if(check_slots(move,last_player)==true)
                     {
-                        // go to the next in list
+                        // jump twice
                         i=i+2;
                     }
                 }
@@ -456,7 +395,7 @@ int GamePlay::get_next_move()
     return move;
 }
 
-bool GamePlay::check_slots(int position)
+bool GamePlay::check_slots(int position, string current_player)
 {
     // variables
     bool available;
@@ -464,7 +403,7 @@ bool GamePlay::check_slots(int position)
     // initialized variables
     available = false;
 
-    if(player_history[position-1] == " ")
+    if(player_moves[position-1] == current_player)
     {
         available = true;
     }
@@ -481,13 +420,72 @@ bool GamePlay::check_player(string current_player, int position)
     // initialized variables
     is_player = false;
 
-    if(player_history[position-1] == current_player)
+    if(player_moves[position-1] == current_player)
     {
         is_player = true;
     }
 
     // return
     return is_player;
+}
+
+void GamePlay::update_current_game(string current_player, int position, int turn_count)
+{
+    // update current game info
+    turn_number = turn_count + 1;
+    last_position = position;
+    last_player = current_player;
+    player_moves[position-1]=current_player;
+    game_moves[turn_count]=position;
+}
+
+void GamePlay::update_game_history(int game_count, int mode, string game_winner)
+{
+    // variables
+    string game_type;
+
+    // get game type
+    if(mode == 0)
+    {
+        game_type = "Automated";
+    }
+    else if(mode == 1)
+    {
+        game_type = "Player Against Computer";
+    }
+    else
+    {
+        game_type = "Two Player";
+    }
+
+    // change winner history
+    game_winner=(game_winner == "C")?"Tie":game_winner;
+
+    // update game history vectors
+    game_type_history.push_back(game_type);
+    game_winner_history.push_back(game_winner);
+    game_player_history.push_back(player_moves);
+    game_position_history.push_back(game_moves);
+  
+    // games played
+    games_played = game_count+1;
+}
+
+void GamePlay::clear_game_history()
+{
+    // variables
+    int i;
+    string slot;
+
+    // initialize variables
+    slot = " ";
+    
+    // clear position and player history
+    for(i=0;i<9;i++)
+    {
+        game_moves[i] = 0;
+        player_moves[i] = " ";
+    }
 }
 
 void GamePlay::display_game_history(int time_elapsed)
@@ -506,8 +504,6 @@ void GamePlay::display_game_history(int time_elapsed)
     int game_space;
     int table_space;
     int screen_space;
-    int top_ln;
-    int table_top_ln;
     int game_position;
     double tm_time;
 
@@ -520,8 +516,7 @@ void GamePlay::display_game_history(int time_elapsed)
     string table_indent_sp;
     string hplayer_sp;
     string hpos_sp;
-    string header_indent_sp;
-    string line_indent_sp;
+    string game_indent_sp;
     string title_indent_sp;
     string table_sp;
     string table_header_sp;
@@ -538,43 +533,44 @@ void GamePlay::display_game_history(int time_elapsed)
     string top_line_sp;
     string table_line_sp;
 
-    // game size: game_space
-    // table size: table_space
-
-    // header text
+    /* TEXT */
     header_title = "Game History";
     header_row_pla = "Player";
     header_row_pos = "Position";
 
-    // size of left indent for table, left indent of player and postion on header row
+    /* VALUES SECTION */
+
+    /* CHANGEABLE */
+    // size of display indent (game_ind), left indent for table (table_ind)
     // these are changeable
     game_ind = 2;
     table_ind = 10;
+
+    // for table column headers
+    // pla_ind for 'Player' is relative to distance from 'Turn:' 
+    // pos_ind is the relative space between 'Player' and 'Position
     pla_ind = 3;
     pos_ind = 4;
 
-    // lengths in game
+    /* DO NOT CHANGE */
+    // lengths
     table_space = turn_ind + pla_ind + pos_ind + header_row_pla.size() + header_row_pos.size();
-    screen_space = game_ind + table_ind + table_space;
+    screen_space = table_space + (game_ind + table_ind * 2);
     game_space = screen_space - game_ind;
 
     // game history title indent
-    title_ind = (table_space - header_title.size()) / 2;
+    title_ind = (game_space - header_title.size()) / 2;
 
-    // top line underlining space
-    top_ln = table_space + (table_ind * 2);
-    table_top_ln = table_space + 4;
-
+    /* STRING SPACING - DO NOT CHANGE */
     // base indents
-    header_indent_sp = string(game_ind,' ');
-    table_indent_sp = header_indent_sp + string(table_ind,' ');
-    line_indent_sp = string(table_ind,' ');
-
-    // specific indents
-    title_indent_sp = table_indent_sp + string(title_ind,' ');
-    table_header_sp = table_indent_sp + string(turn_ind,' ');
+    game_indent_sp = string(game_ind,' ');
     hplayer_sp = string(pla_ind,' ');
     hpos_sp = string(pos_ind,' ');
+
+    // relative spacing
+    title_indent_sp = game_indent_sp + string(title_ind,' ');
+    table_indent_sp = game_indent_sp + string(table_ind,' ');
+    table_header_sp = table_indent_sp + string(turn_ind,' ');
 
     // constants: spaces on either side of player name (X or O) to keep centered with Player header
     pla_sp1 = hplayer_sp + string((header_row_pla.size()) / 2 - 1,' ');
@@ -585,8 +581,8 @@ void GamePlay::display_game_history(int time_elapsed)
     pos_sp2 = string((header_row_pos.size()) / 2,' ');
 
     // decorative underlining
-    top_line_sp = header_indent_sp + string(top_ln,'_');
-    table_line_sp = line_indent_sp + string(table_top_ln,'_');
+    top_line_sp = game_indent_sp + string(game_space,'_');
+    table_line_sp = string(table_ind,' ') + string(table_space + 4,'_');
 
     // underlines for sizing and testing
     table_sp = string(table_space,'_');
@@ -601,9 +597,9 @@ void GamePlay::display_game_history(int time_elapsed)
 	cout << "\n\n";
     cout << top_line_sp << "\n\n";
     cout << title_indent_sp << header_title << "\n\n";
-	cout << header_indent_sp << "Games Played: " << games_played << "\n";
-    cout << header_indent_sp << "Play Time: " << tm_time << tm_type << "\n\n";
-    cout << header_indent_sp << "Game Results\n\n";
+	cout << game_indent_sp << "Games Played: " << games_played << "\n";
+    cout << game_indent_sp << "Play Time: " << tm_time << tm_type << "\n\n";
+    cout << game_indent_sp << "Game Results\n\n";
 
     // iterate through loop for each round
     for(i=0;i<games_played;i++)
@@ -621,14 +617,14 @@ void GamePlay::display_game_history(int time_elapsed)
         cout << hpos_sp << header_row_pos << "\n";
 
         // iterate through loop for game data for table
-        for(ix=0; ix<game_history_player[i].size(); ix++)
+        for(ix=0; ix<game_player_history[i].size(); ix++)
         {
             // get game position
-            game_position = game_history_position[i][ix];
+            game_position = game_position_history[i][ix];
             if(game_position > 0)
             {
                 // get player name
-                game_player = game_history_player[i][game_position-1];
+                game_player = game_player_history[i][game_position-1];
 
                 // output to screen
                 cout << table_indent_sp << "Turn " << ix + 1 << ":";
