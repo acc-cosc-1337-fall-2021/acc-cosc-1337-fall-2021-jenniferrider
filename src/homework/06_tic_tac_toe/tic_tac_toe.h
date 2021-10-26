@@ -37,6 +37,7 @@ class GamePlay
 {
     public:
         int get_next_move();
+        int * calcTime(int x);
         bool validate_position(int position);
         void display_menu()const;
         void display_turn_info()const;
@@ -52,7 +53,7 @@ class GamePlay
         int turn_number;
         int games_played;
         string last_player;
-        vector<int> game_moves = vector<int>(9);				    // keeps turn history of single game
+        vector<int> game_moves = vector<int>(9);				    // tracks positions
     	vector<string> player_moves = vector<string>(9," ");		// tracks used slots
         vector<string> game_type_history;                           // track game type for each game played: automated, against computer, two player
         vector<string> game_winner_history;                         // track winner for each game played
@@ -60,9 +61,8 @@ class GamePlay
         vector< vector<string> > game_player_history;               // tracks player history of all games
 
         // functions
-        int board_check();
-        bool check_slots(int position, string current_player = " ");
-        bool check_player(string current_player, int position);
+        bool check_slots(int position);
+        bool check_player(int position, string current_player);
 };
 
 class StringExtension

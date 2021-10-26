@@ -44,6 +44,9 @@ int main()
 								{3,1,6,4,9,2,5,7,8}
 							};
 
+	// clear game history
+	play.clear_game_history();
+
 	// program information
 	cout << "\nWelcome to Tic-Tac-Toe!  This is a game everyone can play!\n";
 
@@ -183,7 +186,7 @@ int main()
 
 	// end time and get difference
 	time_t end = time(NULL);
-	tm_elapsed = end - start;
+	tm_elapsed = (end - start);
 
 	// display game history
 	play.display_game_history(tm_elapsed);

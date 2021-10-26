@@ -1,9 +1,11 @@
 // include
 #include "tic_tac_toe.h"
 #include <iostream>
+#include <time.h>
+#include <string>
 
 // using
-using std::cout;
+using std::cout; using std::string;
 
 void TicTacToe::start_game(string first_player)
 {
@@ -349,7 +351,7 @@ int GamePlay::get_next_move()
                     {5,3,9,4},
                     {5,4,8,3},
                     {5,7,9,2},
-                    {5,8,6}
+                    {5,8,6,3}
                     };
     
     // assign correct array to variable
@@ -361,6 +363,7 @@ int GamePlay::get_next_move()
         move = mychoice[i];
         if(move == 0)
         {
+            cout << "\nNo move\n";
             // find first unused slot
             for(ix=0;ix<9;ix++)
             {
@@ -381,12 +384,16 @@ int GamePlay::get_next_move()
             {
                 if(turn_number == 3 || turn_number == 5 || turn_number == 7)
                 {
-                    if(check_slots(move,last_player)==true)
+                    if(check_player(move,last_player)==true)
                     {
                         // jump twice
                         i=i+2;
                     }
                 }
+            }
+            else
+            {
+                break;
             }
         }
     }
@@ -395,7 +402,7 @@ int GamePlay::get_next_move()
     return move;
 }
 
-bool GamePlay::check_slots(int position, string current_player)
+bool GamePlay::check_slots(int position)
 {
     // variables
     bool available;
@@ -403,7 +410,7 @@ bool GamePlay::check_slots(int position, string current_player)
     // initialized variables
     available = false;
 
-    if(player_moves[position-1] == current_player)
+    if(player_moves[position-1] == " ")
     {
         available = true;
     }
@@ -412,7 +419,7 @@ bool GamePlay::check_slots(int position, string current_player)
     return available;
 }
 
-bool GamePlay::check_player(string current_player, int position)
+bool GamePlay::check_player(int position, string current_player)
 {
     // variables
     bool is_player;
@@ -496,6 +503,7 @@ void GamePlay::display_game_history(int time_elapsed)
     // variables
     int i;
     int ix;
+    int iy;
     int game_ind;
     int table_ind;
     int title_ind;
@@ -505,6 +513,7 @@ void GamePlay::display_game_history(int time_elapsed)
     int table_space;
     int screen_space;
     int game_position;
+    int *times;
     double tm_time;
 
     // string names
@@ -532,6 +541,12 @@ void GamePlay::display_game_history(int time_elapsed)
     // underlining
     string top_line_sp;
     string table_line_sp;
+
+    // var 
+    iy = 6;
+
+    // arrays
+    string names[7] ={"seconds","minute(s)","hour(s)","day(s)","week(s)","month(s)","year(s)"};
 
     /* TEXT */
     header_title = "Game History";
@@ -590,15 +605,23 @@ void GamePlay::display_game_history(int time_elapsed)
     game_sp = string(game_space,'_');
 
     // get time math
-    tm_time = (time_elapsed >= 60) ? time_elapsed/60 : time_elapsed;
-    tm_type = (time_elapsed >= 60) ? " minutes" : " seconds";
+    times = calcTime(time_elapsed);
 
     // display header
 	cout << "\n\n";
     cout << top_line_sp << "\n\n";
     cout << title_indent_sp << header_title << "\n\n";
 	cout << game_indent_sp << "Games Played: " << games_played << "\n";
-    cout << game_indent_sp << "Play Time: " << tm_time << tm_type << "\n\n";
+    cout << game_indent_sp << "Play Time: ";
+    while(iy > 0)
+    {    
+        if(times[iy] > 0)
+        {
+            cout << times[iy] << " " << names[iy] << ", ";
+        }
+        iy--;
+    }
+    cout << times[0] << " " << names[iy] << "\n\n";
     cout << game_indent_sp << "Game Results\n\n";
 
     // iterate through loop for each round
@@ -678,7 +701,7 @@ void StringExtension::strFirstLetter(string &str)
     }
 }
 
-int * calcTime(int x)
+int * GamePlay::calcTime(int x)
 {
     int i;
     int quot_time;
@@ -687,21 +710,30 @@ int * calcTime(int x)
 
     // initialize
     i = 0; 
-    int auto_positions[] = {60,60,24,7,30,365};
-    static int times[7];
+    int auto_positions[] = {60,60,24,7,30,12};
+    static int times[6];
 
-    while(quot_time > 1)
+    do
     {
-
         quot_time = x/auto_positions[i];
-        rem_time = rem_time % auto_positions[i];
+        rem_time = x % auto_positions[i];
         
-        // add to time array
-        times[i]=rem_time;
+        if(rem_time > auto_positions[i])
+        {
+            // add to time array
+            times[i]=quot_time;
+        }
+        else{
+            times[i]=rem_time;
+        }
 
         // increment
-    }
+        i++;
 
+        // fix value
+        x = quot_time;
+    }while(quot_time > 0);
+    
     // return
     return times;
 }
