@@ -19,7 +19,7 @@ int main(){
 	play_again = "y";
 
 	// program information
-	cout << "\nThis program is a game called Tic-Tac-Toe\n";
+	cout << "\nThis program is a game that is known as Tic-Tac-Toe\n";
 
 	// continue while user enters 'y' to keep playing game.
 	do

@@ -523,7 +523,7 @@ TEST_CASE("Verify Tic-Tac-Toe Test Case 11", "Winner - Test Diagonal Win 7,5,3")
 
 		if(game_done == true)
 		{
-			// turn count should be no higher than four for testing
+			// turn count should be no higher than four for testing purposes
 				REQUIRE(i == 4);
 
 			// validate that if winner found, it's X (first player)
