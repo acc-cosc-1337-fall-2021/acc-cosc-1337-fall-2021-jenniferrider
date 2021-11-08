@@ -5,6 +5,7 @@
 // using
 using std::cout;
 
+// TicTacToe class
 void TicTacToe::start_game(string first_player)
 {
     //First player function argument must be X or O
@@ -13,64 +14,6 @@ void TicTacToe::start_game(string first_player)
 
     //Call the clear_the_board function
     clear_board();
-}
-
-void TicTacToe::display_board() const
-{
-    //iterate vector of strings pegs to display a tic tac toe board in 3x3
-    // variables
-    int i;
-    string g_left;
-    string g_name;
-    string g_row;
-    string g_col;
-    string g_sp;
-
-    // base measurements of board space
-    // total area: 45 spaces
-    //// left indent: 20 spaces (g_left)
-    //// board width: 25 spaces (g_row)
-    ////// name indent: 7 spaces (g_name)
-    ////// square width: 7 spaces (g_sp)
-    ////// square height: 2 lines 
-
-    // initialize variables
-    g_left = string(20,' ');
-    g_name = string(7,' ');
-    g_row = string(25,'_') + "\n\n";
-    g_col = "|";
-    g_sp = string(3,' ');
-
-    // pre-set up
-    cout<<"\n";
-    cout << g_left << g_name << "Tic-Tac-Toe" << "\n";
-
-    // add divider
-    cout << g_left << g_row;
-
-    // set up first row
-    cout << g_left;
-
-    // populate board
-    for(i=0;i<9;i++)
-    {
-        // row of three
-        cout << g_col << g_sp << pegs[i] << g_sp;
-        if( (i+1) % 3 == 0)
-        {
-            // end row
-            cout << g_col << "\n";
-
-            // add divider
-            cout << g_left << g_row;
-
-            // start new row (if not last)
-            if(i != 8)
-            { 
-                cout << g_left; 
-            }
-        }
-    }
 }
 
 void TicTacToe::mark_board(int position)
@@ -255,6 +198,140 @@ bool TicTacToe::check_board_full()
     return not_available;
 }
 
+// TicTacToe class friends
+ostream& operator<<(ostream& out, const TicTacToe& game)
+{
+    //iterate vector of strings pegs to display a tic tac toe board in 3x3
+    // variables
+    int i;
+    string g_left;
+    string g_name;
+    string g_row;
+    string g_col;
+    string g_sp;
+
+    // base measurements of board space
+    // total area: 45 spaces
+    //// left indent: 20 spaces (g_left)
+    //// board width: 25 spaces (g_row)
+    ////// name indent: 7 spaces (g_name)
+    ////// square width: 7 spaces (g_sp)
+    ////// square height: 2 lines 
+
+    // initialize variables
+    g_left = string(20,' ');
+    g_name = string(7,' ');
+    g_row = string(25,'_') + "\n\n";
+    g_col = "|";
+    g_sp = string(3,' ');
+
+    // pre-set up
+    out <<"\n";
+    out << g_left << g_name << "Tic-Tac-Toe" << "\n";
+
+    // add divider and set up first row
+    out << g_left << g_row << g_left;
+
+    // populate board
+    for(i=0;i<9;i++)
+    {
+        // row of three
+        out << g_col << g_sp << game.pegs[i] << g_sp;
+        if( (i+1) % 3 == 0)
+        {
+            // end row
+            out << g_col << "\n";
+
+            // add divider
+            out << g_left << g_row;
+
+            // start new row (if not last)
+            if(i != 8)
+            { 
+                out << g_left; 
+            }
+        }
+    }
+
+    // return
+    return out;
+}
+
+istream& operator>>(istream& in, TicTacToe& game)
+{
+    // variables
+    int position;
+
+    // ask for user interaction
+    cout << "\nSelect a position between 1 and 9: ";
+    in >> position;
+
+    // mark position on board
+    game.mark_board(position);
+
+    // return
+    return in;
+}
+
+// TicTacToeManager class
+void TicTacToeManager::save_game(TicTacToe b)
+{
+    // variables
+    string winner;
+
+    // get winner
+    winner = b.get_winner();
+
+    // add the TicTacToe to games vector with push_back
+    games.push_back(b);
+
+    // call update winner count pass the winner from TicTacToe to update x, o, or tie totals.
+    update_winner_count(b.get_winner());
+}
+
+void TicTacToeManager::update_winner_count(string winner)
+{
+    //if winner X increment x_win, if winner O increment o_win, and else increment ties 
+    if(winner == "X")
+    {
+        x_win = x_win + 1;
+    }
+    else if(winner == "O")
+    {
+        o_win = o_win + 1;
+    }
+    else
+    {
+        ties = ties + 1;
+    }
+}
+
+void TicTacToeManager::get_winner_total(int& w, int& o, int& t)
+{
+    // Use references to get the winners  
+    w = x_win;
+    o = o_win;
+    t = ties;
+}
+
+// TicTacToeManager class friends
+ostream& operator<<(std::ostream& out, const TicTacToeManager& manager)
+{
+    // variables
+    int i;
+    string game_winner;
+
+    out << "\nHi!\n";
+
+    // Overload <<-Loop through vector of TicTacToe and call the TicTacToe cout overload.
+    for(i=0;i<3;i++)
+    {
+        out << manager.games[i] <<"\n";
+    }
+}
+
+
+// Helper functions
 void strToUpper(string &str)
 {
     // variables
