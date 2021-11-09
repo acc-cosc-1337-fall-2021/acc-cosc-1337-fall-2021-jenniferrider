@@ -1,4 +1,5 @@
 #include "tic_tac_toe.h"
+#include "tic_tac_toe_manager.h"
 #include <iostream>
 
 // using
@@ -12,7 +13,6 @@ int main(){
 
 	// temp variables
 	int i;
-	string play_again_var[]={"y","y","n"};
 	
 	// temp initialized variables
 	i = 0;
@@ -25,7 +25,7 @@ int main(){
 	string game_winner;
 
 	// initialized variables
-	//play_again = "y";
+	play_again = "y";
 
 	// program information
 	cout << "\nThis program is a game that is known as Tic-Tac-Toe\n";
@@ -75,38 +75,45 @@ int main(){
 			cout << "The winner is " << game_winner << "!  Congratulations!\n\n";
 		}
 
-		// reset board using start_game function
-		game.start_game(first_player);
-		
 		// add to TicTacToeManager class - update winner count
 		manager.save_game(game);
 
-		// show winners
+		// reset board using start_game function
+		game.start_game(first_player);
+
+		// get winner history
 		manager.get_winner_total(w,o,t);
+
+		// show winner history
+		cout << "Current Totals:\n";
 		cout << "X: " << w << "\n";
 		cout << "O: " << o << "\n";
 		cout << "Tie: " << t << "\n";
 
 		// user interaction - play again
 		cout << "\nDo you want to play again?  Enter 'y' for 'yes' or 'n' for 'no': ";
-		//cin >> play_again;
-		//strToLower(play_again);
-		play_again = play_again_var[i];
-		i++;
+		cin >> play_again;
+		strToLower(play_again);
 
 	} while (play_again == "y");
 
 	// output - show history
 	cout << "\nShowing history.\n";
 	
-	// show winners
+	// get winner history
 	manager.get_winner_total(w,o,t);
+
+	// display winner history
+	cout << "Final Totals:\n";
 	cout << "X: " << w << "\n";
 	cout << "O: " << o << "\n";
 	cout << "Tie: " << t << "\n";
 
+	// game history
+	cout << manager;
+
 	// output - end of game
-	cout << "\nProgram exiting.\n";
+	cout << "\nGoodbye.\n";
 	
 	// return
 	return 0;

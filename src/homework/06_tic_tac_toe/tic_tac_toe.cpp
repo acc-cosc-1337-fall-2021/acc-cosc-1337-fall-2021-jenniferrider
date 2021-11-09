@@ -1,5 +1,6 @@
 // include
 #include "tic_tac_toe.h"
+#include "tic_tac_toe_manager.h"
 #include <iostream>
 
 // using
@@ -272,64 +273,6 @@ istream& operator>>(istream& in, TicTacToe& game)
     // return
     return in;
 }
-
-// TicTacToeManager class
-void TicTacToeManager::save_game(TicTacToe b)
-{
-    // variables
-    string winner;
-
-    // get winner
-    winner = b.get_winner();
-
-    // add the TicTacToe to games vector with push_back
-    games.push_back(b);
-
-    // call update winner count pass the winner from TicTacToe to update x, o, or tie totals.
-    update_winner_count(b.get_winner());
-}
-
-void TicTacToeManager::update_winner_count(string winner)
-{
-    //if winner X increment x_win, if winner O increment o_win, and else increment ties 
-    if(winner == "X")
-    {
-        x_win = x_win + 1;
-    }
-    else if(winner == "O")
-    {
-        o_win = o_win + 1;
-    }
-    else
-    {
-        ties = ties + 1;
-    }
-}
-
-void TicTacToeManager::get_winner_total(int& w, int& o, int& t)
-{
-    // Use references to get the winners  
-    w = x_win;
-    o = o_win;
-    t = ties;
-}
-
-// TicTacToeManager class friends
-ostream& operator<<(std::ostream& out, const TicTacToeManager& manager)
-{
-    // variables
-    int i;
-    string game_winner;
-
-    out << "\nHi!\n";
-
-    // Overload <<-Loop through vector of TicTacToe and call the TicTacToe cout overload.
-    for(i=0;i<3;i++)
-    {
-        out << manager.games[i] <<"\n";
-    }
-}
-
 
 // Helper functions
 void strToUpper(string &str)
