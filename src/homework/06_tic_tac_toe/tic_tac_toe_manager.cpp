@@ -13,7 +13,7 @@ void TicTacToeManager::save_game(unique_ptr<TicTacToe>&& b)
     // add the TicTacToe to games vector with push_back
     games_played.push_back(move(b));
     
-    cout << "Leaving save game\n";
+   cout << "Leaving save game\n";
 }
 
 void TicTacToeManager::update_winner_count(string winner)

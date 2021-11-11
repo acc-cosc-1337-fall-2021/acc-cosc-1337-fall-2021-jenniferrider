@@ -9,14 +9,18 @@ using std::cout;using std::sqrt;
 void TicTacToe::start_game(string first_player)
 {
     cout << "Hi from start_game!\n";
-    cout << first_player << "\n";
+    cout << "Get Player2: " << player << "\n";
+
     //First player function argument must be X or O
     //In function set player(private variable) to first_player function argument
     player = first_player;
-    cout << player;
+
+    cout << "Get Player3: " << player << "\n";
 
     //Call the clear_the_board function
     clear_board();
+
+    cout << "Leaving start_game\n";
 }
 
 void TicTacToe::mark_board(int position)
