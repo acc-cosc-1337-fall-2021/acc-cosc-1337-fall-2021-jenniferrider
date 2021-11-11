@@ -1,11 +1,9 @@
-//#include "tic_tac_toe.h"
-#include "tic_tac_toe_manager.h"
-#include "tic_tac_toe_3.h"
 #include "tic_tac_toe_4.h"
-#include <iostream>
+#include "tic_tac_toe_3.h"
+#include "tic_tac_toe_manager.h"
 
 // using
-using std::cin; using std::cout;using std::unique_ptr;using std::make_unique;using std::move;
+using std::cin;using std::cout;using std::unique_ptr;using std::make_unique;using std::move;
 //class TicTacToe;
 
 int main(){
@@ -14,14 +12,8 @@ int main(){
 	unique_ptr<TicTacToe> game;
 	TicTacToeManager manager;
 
-	// temp variables
-	int i;
-	int version_choice;
-	
-	// temp initialized variables
-	i = 0;
-
 	// variables
+	int version_choice;
 	int w, o, t;
 	int position;
 	string play_again;
@@ -93,21 +85,16 @@ int main(){
 		}
 
 		// add to TicTacToeManager class - update winner count
-		//manager.save_game(game);
-		//manager.save_game(*game);
 		manager.save_game(move(game)); // use with function def argument &&
 
 		// get winner history
 		manager.get_winner_total(w,o,t);
 
 		// show winner history
-		cout << "Current Totals:\n";
+		cout << "Running Totals:\n";
 		cout << "X: " << w << "\n";
 		cout << "O: " << o << "\n";
 		cout << "Tie: " << t << "\n";
-
-		// reset board using start_game function
-		//game->start_game(first_player);
 
 		// user interaction - play again
 		cout << "\nDo you want to play again?  Enter 'y' for 'yes' or 'n' for 'no': ";
@@ -115,15 +102,12 @@ int main(){
 		strToLower(play_again);
 
 	} while (play_again == "y");
-
-	// output - show history
-	cout << "\nShowing history.\n";
 	
 	// get winner history
 	manager.get_winner_total(w,o,t);
 
 	// display winner history
-	cout << "Final Totals:\n";
+	cout << "\nFinal Totals:\n";
 	cout << "X: " << w << "\n";
 	cout << "O: " << o << "\n";
 	cout << "Tie: " << t << "\n";

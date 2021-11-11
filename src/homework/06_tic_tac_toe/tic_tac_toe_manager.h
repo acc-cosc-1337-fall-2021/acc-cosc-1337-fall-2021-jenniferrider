@@ -1,9 +1,9 @@
 // include
 #include "tic_tac_toe.h"
-#include<memory>
+#include <memory>
 
 // using
-using std::vector;using std::string;using std::ostream; using std::istream; using std::unique_ptr;
+using std::ostream;using std::istream;using std::string;using std::vector;using std::unique_ptr;
 
 #ifndef TICTACTOEMANAGER_H
 #define TICTACTOEMANAGER_H

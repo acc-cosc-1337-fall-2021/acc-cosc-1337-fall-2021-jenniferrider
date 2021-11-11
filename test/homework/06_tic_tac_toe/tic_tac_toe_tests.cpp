@@ -1,10 +1,9 @@
 #define CATCH_CONFIG_MAIN  // This tells Catch to provide a main() - only do this in one cpp file
 #include "catch.hpp"
-#include "tic_tac_toe.h"
-#include "tic_tac_toe_manager.h"
-#include "tic_tac_toe_3.h"
 #include "tic_tac_toe_4.h"
-#include <iostream>
+#include "tic_tac_toe_3.h"
+#include "tic_tac_toe_manager.h"
+#include "tic_tac_toe.h"
 
 using std::cout;using std::unique_ptr;using std::make_unique;using std::move;
 
@@ -17,9 +16,6 @@ TEST_CASE("Verify Tic-Tac-Toe Test Case 1", "3X3 - Validate TicTacToe getwinner 
 	// class declaration
 	unique_ptr<TicTacToe> game;
 	TicTacToeManager manager;
-
-	// 3X3
-	game = make_unique<TicTacToe3>();
 
 	// variables
 	int i;
@@ -43,16 +39,13 @@ TEST_CASE("Verify Tic-Tac-Toe Test Case 1", "3X3 - Validate TicTacToe getwinner 
 	// do until three games played
 	do
 	{
-		cout << "\nHi from beginning of loop!\n";
-		cout << "Get Player1: " << game->get_player() << "\n";
+		// Object must be recreated in ever iteration
+		game = make_unique<TicTacToe3>();
+
 		// start game and display board
 		game->start_game(auto_player[i]);
-		//game->start_game(first_player);
-
-		cout << "Just started game!\n";
-		cout << "Get Player4: " << game->get_player() << "\n";
 		cout << *game;
-
+		
 		// initialize turn counter
 		ix = 0;
 
@@ -97,27 +90,11 @@ TEST_CASE("Verify Tic-Tac-Toe Test Case 1", "3X3 - Validate TicTacToe getwinner 
 
 		} while (game_done == false);
 
-		cout << "Before save_game:\n";
-		cout << "Get Player5: " << game->get_player() << "\n";
-
 		// add to TicTacToeManager class - update winner count
 		manager.save_game(move(game));
 
-		cout << "After save_game:\n";
-		cout << "Get Player6: " << game->get_player() << "\n";
-
-		manager.get_winner_total(w,o,t);
-		cout << w << "\n";
-		cout << o << "\n";
-		cout << t << "\n";
-
-		cout << "After get_winner_total\n";
-		cout << "Get Player7: " << game->get_player() << "\n";
-
 		// iterate i as a counter for number of games; there should be a total of 3
 		i++;
-
-		cout << "Hi end of loop!\n";
 
 	} while(i < 3);
 
@@ -126,12 +103,12 @@ TEST_CASE("Verify Tic-Tac-Toe Test Case 1", "3X3 - Validate TicTacToe getwinner 
 
 	// validates winners
 	manager.get_winner_total(w,o,t);
-	//REQUIRE(w == 1);
-	//REQUIRE(o == 1);
-	//REQUIRE(t == 1);
+	REQUIRE(w == 1);
+	REQUIRE(o == 1);
+	REQUIRE(t == 1);
 }
 
-/*TEST_CASE("Verify Tic-Tac-Toe Test Case 2", "4X4 - Test First Player Set to X")
+TEST_CASE("Verify Tic-Tac-Toe Test Case 2", "4X4 - Test First Player Set to X")
 {
 	// class declaration
 	unique_ptr<TicTacToe> game;
@@ -790,7 +767,7 @@ TEST_CASE("Verify Tic-Tac-Toe Test Case 14", "Winner - Test Diagonal Win 4,7,10,
 
 	// validates game iterated sixteen times
 	REQUIRE(i == 7);
-}*/
+}
 
 //Total Tests: 16
 // Verification: 1

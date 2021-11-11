@@ -1,7 +1,6 @@
 // include
 #include "tic_tac_toe_manager.h"
 #include <utility>
-#include <memory>
 
 using std::cout;
 
@@ -12,8 +11,6 @@ void TicTacToeManager::save_game(unique_ptr<TicTacToe>&& b)
 
     // add the TicTacToe to games vector with push_back
     games_played.push_back(move(b));
-    
-   cout << "Leaving save game\n";
 }
 
 void TicTacToeManager::update_winner_count(string winner)
@@ -51,7 +48,7 @@ ostream& operator<<(std::ostream& out, const TicTacToeManager& manager)
     for(i=0;i<manager.games_played.size();i++)
     {
         out << "\nGame " << i+1 << "\n";
-       // this is making a copy 
+       // this gives the value
         out << *manager.games_played[i] <<"\n";
     }
 

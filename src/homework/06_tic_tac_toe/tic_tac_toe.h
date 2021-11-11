@@ -1,10 +1,10 @@
 // include
+#include<iostream>
 #include<string>
 #include<vector>
-#include<iostream>
 
 // using
-using std::string;using std::vector;using std::ostream; using std::istream;
+using std::ostream; using std::istream;using std::string;using std::vector;
 
 #ifndef TICTACTOE_H
 #define TICTACTOE_H

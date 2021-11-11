@@ -1,26 +1,18 @@
 // include
 #include "tic_tac_toe.h"
 #include "math.h"
-#include <iostream>
 
 // using
 using std::cout;using std::sqrt;
 
+// class declaration
 void TicTacToe::start_game(string first_player)
 {
-    cout << "Hi from start_game!\n";
-    cout << "Get Player2: " << player << "\n";
-
-    //First player function argument must be X or O
     //In function set player(private variable) to first_player function argument
     player = first_player;
 
-    cout << "Get Player3: " << player << "\n";
-
     //Call the clear_the_board function
     clear_board();
-
-    cout << "Leaving start_game\n";
 }
 
 void TicTacToe::mark_board(int position)
@@ -213,7 +205,7 @@ ostream& operator<<(ostream& out, const TicTacToe& game)
             out << g_left << g_row << "\n\n";
 
             // start new row (if not last row)
-            if(i != peg_sz)
+            if(i != peg_sz-1)
             { 
                 out << g_left; 
             }
