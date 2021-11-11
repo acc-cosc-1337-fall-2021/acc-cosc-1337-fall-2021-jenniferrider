@@ -1,21 +1,18 @@
 // include
-#include<string>
-#include<vector>
-#include<iostream>
+#include "tic_tac_toe.h"
+#include<memory>
 
 // using
-using std::vector;using std::string;using std::ostream; using std::istream;
-
-// class declarations
-class TicTacToe;
+using std::vector;using std::string;using std::ostream; using std::istream; using std::unique_ptr;
 
 #ifndef TICTACTOEMANAGER_H
+#define TICTACTOEMANAGER_H
 
-class TicTacToeManager
+class TicTacToeManager 
 {
     public:
         // functions
-        void save_game(TicTacToe b);
+        void save_game(unique_ptr<TicTacToe>&& b);
         void get_winner_total(int& w, int& o, int& t);
 
         // friend functions
@@ -26,7 +23,7 @@ class TicTacToeManager
         int x_win = 0;
         int o_win = 0;
         int ties = 0;
-        vector<TicTacToe> games_played;
+        vector<unique_ptr<TicTacToe>> games_played;
 
         //functions
         void update_winner_count(string winner);

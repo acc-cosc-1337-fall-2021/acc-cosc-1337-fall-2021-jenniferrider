@@ -1,17 +1,19 @@
 // include
 #include "tic_tac_toe.h"
-#include "tic_tac_toe_manager.h"
+#include "math.h"
 #include <iostream>
 
 // using
-using std::cout;
+using std::cout;using std::sqrt;
 
-// TicTacToe class
 void TicTacToe::start_game(string first_player)
 {
+    cout << "Hi from start_game!\n";
+    cout << first_player << "\n";
     //First player function argument must be X or O
     //In function set player(private variable) to first_player function argument
     player = first_player;
+    cout << player;
 
     //Call the clear_the_board function
     clear_board();
@@ -46,6 +48,7 @@ void TicTacToe::set_next_player()
 
 string TicTacToe::get_winner()
 {
+    // return winner
     return winner;
 }
 
@@ -61,7 +64,7 @@ void TicTacToe::clear_board()
     int i;
 
     // set all 9 elements to a " " (space)
-    for(i=0;i<9;i++)
+    for(i=0;i<pegs.size();i++)
     {
         pegs[i] = " ";
     }
@@ -93,91 +96,20 @@ bool TicTacToe::game_over()
 
 bool TicTacToe::check_column_win()
 {
-    // variables
-    bool you_win;
-    string last_player;
-
-    // initialized variables
-    you_win = false;
-    last_player = (get_player() == "X") ? "O" : "X";
-
-    // options: 0, 3, 6; 1, 4, 7; 2, 5, 8
-    if(pegs[0]==last_player && pegs[3] == last_player && pegs[6] == last_player)
-    {
-        // true
-        you_win = true;
-    }
-    else if(pegs[1]==last_player && pegs[4] == last_player && pegs[7] == last_player)
-    {
-        //true
-        you_win = true;
-    }
-    else if(pegs[2]==last_player && pegs[5] == last_player && pegs[8] == last_player)
-    {
-        //true
-        you_win = true;
-    }
-
     // return
-    return you_win;
+    return false;
 }
 
 bool TicTacToe::check_row_win()
 {
-    //cout << "Check Row Function\n";
-    // variables
-    bool you_win;
-    string last_player;
-
-    // initialized variables
-    you_win = false;
-    last_player = (get_player() == "X") ? "O" : "X";
-
-    //Options: 0, 1, 2; 3, 4, 5; 6, 7, 8
-    if(pegs[0]==last_player && pegs[1] == last_player && pegs[2] == last_player)
-    {
-        // true
-        you_win = true;
-    }
-    else if(pegs[3]==last_player && pegs[4] == last_player && pegs[5] == last_player)
-    {
-        //true
-        you_win = true;
-    }
-    else if(pegs[6]==last_player && pegs[7] == last_player && pegs[8] == last_player)
-    {
-        //true
-        you_win = true;
-    }
-
     // return
-    return you_win;
+    return false;
 }
 
 bool TicTacToe::check_diagonal_win()
 {
-    // variables
-    bool you_win;
-    string last_player;
-
-    //initialize variables
-    you_win = false;
-    last_player = (get_player() == "X") ? "O" : "X";
-
-    //0, 4, 8; 2, 4, 6;
-    if(pegs[0] == last_player && pegs[4] == last_player && pegs[8] == last_player)
-    {
-        // true
-        you_win = true;
-    }
-    else if(pegs[2] == last_player && pegs[4] == last_player && pegs[6] == last_player)
-    {
-        //true
-        you_win = true;
-    }
-
     // return
-    return you_win;
+    return false;
 }
 
 bool TicTacToe::check_board_full()
@@ -190,7 +122,7 @@ bool TicTacToe::check_board_full()
     not_available = true;
 
     // return false if vector of strings pegs has available slot by checking for a " " (space) in each element. Otherwise return true
-    for(i=0;i<9;i++)
+    for(i=0;i<pegs.size();i++)
     {
         if(pegs[i] == " "){ not_available = false; break; }
     }
@@ -202,52 +134,82 @@ bool TicTacToe::check_board_full()
 // TicTacToe class friends
 ostream& operator<<(ostream& out, const TicTacToe& game)
 {
-    //iterate vector of strings pegs to display a tic tac toe board in 3x3
+    // iterate vector of strings pegs to display a tic tac toe board in 3x3 or 4X4
+    // constants
+    int const base_col = 3;
+
     // variables
     int i;
+    int ind_sz;
+    int space_sz;
+    int add_col;
+    int peg_sz;
+    int peg_num;
+    int base_sz;
+    int add_sz;
+    int game_board_size;
+    string game_title;
     string g_left;
     string g_name;
     string g_row;
     string g_col;
     string g_sp;
 
-    // base measurements of board space
-    // total area: 45 spaces
-    //// left indent: 20 spaces (g_left)
-    //// board width: 25 spaces (g_row)
-    ////// name indent: 7 spaces (g_name)
-    ////// square width: 7 spaces (g_sp)
-    ////// square height: 2 lines 
 
-    // initialize variables
-    g_left = string(20,' ');
-    g_name = string(7,' ');
-    g_row = string(25,'_') + "\n\n";
+    // GETTING BOARD SIZE:
+    // BASE SIZE FORMULA: (space_sz * (base_number_of_columns * 2)) + (base_number_of_columns * 2) + 1;
+    // BOARD EXPANSION FORMULA: (space_sz * (additional_number_of_columns * 2)) + (additional_number_of_columns * 2);
+
+    // INITIALIZE VARIABLES
+    game_title = "Tic-Tac_Toe";                                         // board display title
+
+    // CHANGEABLE
+    ind_sz = 20;                                                        // left indent space
+    space_sz = 3;                                                       // space on each side of X and O on the board
+
+    // DO NOT CHANGE
+    // get size of peg vector
+    peg_sz = game.pegs.size();
+    peg_num = sqrt(peg_sz);
+    add_col = peg_num - base_col;                                       // number of columns to add to base size
+
+    // board formulas
+    base_sz = (space_sz * (base_col* 2)) +  (base_col * 2)  +  1;        // base size of 3X3 board; 
+    add_sz = (space_sz * (add_col * 2)) +  (add_col * 2);                // each additional expansion
+    game_board_size = (peg_num > 3) ? base_sz + add_sz : base_sz;        // game board size
+
+    // board variables
+    g_sp = string(space_sz,' ');
+    g_left = string(ind_sz,' ');
+    g_name = string((game_board_size - game_title.size())/2,' ');
+    g_row = string(game_board_size,'_');
     g_col = "|";
-    g_sp = string(3,' ');
 
-    // pre-set up
-    out <<"\n";
-    out << g_left << g_name << "Tic-Tac-Toe" << "\n";
+    // BOARD SET-UP
+    // game title
+    out << "\n" << g_left << g_name << game_title << "\n";
 
-    // add divider and set up first row
-    out << g_left << g_row << g_left;
+    // add horizontal divider for top of board
+    out << g_left << g_row << "\n\n";
+    
+    // set up first row
+    out << g_left;
 
     // populate board
-    for(i=0;i<9;i++)
+    for(i=0;i<game.pegs.size();i++)
     {
-        // row of three
+        // row of three or four
         out << g_col << g_sp << game.pegs[i] << g_sp;
-        if( (i+1) % 3 == 0)
+        if( (i+1) % peg_num == 0)
         {
             // end row
             out << g_col << "\n";
 
-            // add divider
-            out << g_left << g_row;
+            // add horizontal divider
+            out << g_left << g_row << "\n\n";
 
-            // start new row (if not last)
-            if(i != 8)
+            // start new row (if not last row)
+            if(i != peg_sz)
             { 
                 out << g_left; 
             }
@@ -263,8 +225,8 @@ istream& operator>>(istream& in, TicTacToe& game)
     // variables
     int position;
 
-    // ask for user interaction
-    cout << "\nSelect a position between 1 and 9: ";
+    // user interaction
+    cout << "\nSelect a position between 1 and " << game.pegs.size() << " : ";
     in >> position;
 
     // mark position on board
@@ -275,6 +237,13 @@ istream& operator>>(istream& in, TicTacToe& game)
 }
 
 // Helper functions
+void game_menu()
+{
+    cout << "\nThere are two versions of Tic-Tac-Toe:\n";
+	cout << "1) 3 X 3\n";
+	cout << "2) 4 X 4\n\n";
+	cout << "Which would you like to play? Enter 1 or 2: ";
+}
 void strToUpper(string &str)
 {
     // variables
