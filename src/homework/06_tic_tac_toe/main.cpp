@@ -3,7 +3,7 @@
 #include "tic_tac_toe_manager.h"
 
 // using
-using std::cin;using std::cout;using std::unique_ptr;using std::make_unique;using std::move;
+using std::cin;using std::cout;using std::unique_ptr;using std::make_unique;
 //class TicTacToe;
 
 int main(){
@@ -24,7 +24,7 @@ int main(){
 	play_again = "y";
 
 	// program information
-	cout << "\nThis program is a game that is known as Tic-Tac-Toe.\n";
+	cout << "\nThis is a game that is known as Tic-Tac-Toe.\n";
 
 	// continue while user enters 'y' to keep playing game.
 	do

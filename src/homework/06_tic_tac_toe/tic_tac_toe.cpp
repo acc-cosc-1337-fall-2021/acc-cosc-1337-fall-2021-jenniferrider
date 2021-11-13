@@ -138,9 +138,9 @@ ostream& operator<<(ostream& out, const TicTacToe& game)
     int i;
     int ind_sz;
     int space_sz;
-    int add_col;
-    int peg_sz;
     int peg_num;
+    int col_num;
+    int add_col;
     int base_sz;
     int add_sz;
     int game_board_size;
@@ -151,11 +151,6 @@ ostream& operator<<(ostream& out, const TicTacToe& game)
     string g_col;
     string g_sp;
 
-
-    // GETTING BOARD SIZE:
-    // BASE SIZE FORMULA: (space_sz * (base_number_of_columns * 2)) + (base_number_of_columns * 2) + 1;
-    // BOARD EXPANSION FORMULA: (space_sz * (additional_number_of_columns * 2)) + (additional_number_of_columns * 2);
-
     // INITIALIZE VARIABLES
     game_title = "Tic-Tac_Toe";                                         // board display title
 
@@ -165,14 +160,17 @@ ostream& operator<<(ostream& out, const TicTacToe& game)
 
     // DO NOT CHANGE
     // get size of peg vector
-    peg_sz = game.pegs.size();
-    peg_num = sqrt(peg_sz);
-    add_col = peg_num - base_col;                                       // number of columns to add to base size
+    peg_num = game.pegs.size();
+    col_num = sqrt(peg_num);
+    add_col = col_num - base_col;                                       // number of columns to add to base size
 
-    // board formulas
-    base_sz = (space_sz * (base_col* 2)) +  (base_col * 2)  +  1;        // base size of 3X3 board; 
-    add_sz = (space_sz * (add_col * 2)) +  (add_col * 2);                // each additional expansion
-    game_board_size = (peg_num > 3) ? base_sz + add_sz : base_sz;        // game board size
+    /* GETTING BOARD SIZE:
+    BASE SIZE FORMULA: (space_sz * (base_number_of_columns * 2)) + (base_number_of_columns * 2) + 1;
+    BOARD EXPANSION FORMULA: (space_sz * (additional_number_of_columns * 2)) + (additional_number_of_columns * 2);
+    */
+    base_sz = (space_sz * (base_col* 2)) +  (base_col * 2)  +  1;       // base size of 3X3 board; 
+    add_sz = (space_sz * (add_col * 2)) +  (add_col * 2);               // each additional expansion
+    game_board_size = base_sz + add_sz;                                 // game board size
 
     // board variables
     g_sp = string(space_sz,' ');
@@ -194,9 +192,9 @@ ostream& operator<<(ostream& out, const TicTacToe& game)
     // populate board
     for(i=0;i<game.pegs.size();i++)
     {
-        // row of three or four
+        // create row
         out << g_col << g_sp << game.pegs[i] << g_sp;
-        if( (i+1) % peg_num == 0)
+        if( (i+1) % col_num == 0)
         {
             // end row
             out << g_col << "\n";
@@ -205,7 +203,7 @@ ostream& operator<<(ostream& out, const TicTacToe& game)
             out << g_left << g_row << "\n\n";
 
             // start new row (if not last row)
-            if(i != peg_sz-1)
+            if(i != peg_num-1)
             { 
                 out << g_left; 
             }

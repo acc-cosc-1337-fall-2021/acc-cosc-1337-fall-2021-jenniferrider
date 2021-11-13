@@ -34,7 +34,6 @@ bool TicTacToe3::check_column_win()
 
 bool TicTacToe3::check_row_win()
 {
-    //cout << "Check Row Function\n";
     // variables
     bool you_win;
     string last_player;
@@ -43,7 +42,7 @@ bool TicTacToe3::check_row_win()
     you_win = false;
     last_player = (get_player() == "X") ? "O" : "X";
 
-    //Options: 0, 1, 2; 3, 4, 5; 6, 7, 8
+    // Options: 0, 1, 2; 3, 4, 5; 6, 7, 8
     if(pegs[0]==last_player && pegs[1] == last_player && pegs[2] == last_player)
     {
         // true
@@ -70,7 +69,7 @@ bool TicTacToe3::check_diagonal_win()
     bool you_win;
     string last_player;
 
-    //initialize variables
+    // initialize variables
     you_win = false;
     last_player = (get_player() == "X") ? "O" : "X";
 

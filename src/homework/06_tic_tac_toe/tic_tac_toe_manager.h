@@ -3,7 +3,7 @@
 #include <memory>
 
 // using
-using std::ostream;using std::istream;using std::string;using std::vector;using std::unique_ptr;
+using std::ostream;using std::vector;using std::unique_ptr;
 
 #ifndef TICTACTOEMANAGER_H
 #define TICTACTOEMANAGER_H
