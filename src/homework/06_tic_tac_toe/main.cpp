@@ -33,14 +33,16 @@ int main(){
 		game_menu();
 		cin >> version_choice;
 
-		if(version_choice == 1)
+		(version_choice == 1)?game=(make_unique<TicTacToe3>()):game=(make_unique<TicTacToe4>());
+
+		/*if(version_choice == 1)
 		{
 			game = make_unique<TicTacToe3>();
 		}
 		else
 		{
 			game = make_unique<TicTacToe4>();
-		}
+		}*/
 
 		// continue until user enters 'X' or 'O'; for first_player
 		do

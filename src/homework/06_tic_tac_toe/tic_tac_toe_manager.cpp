@@ -4,6 +4,17 @@
 
 using std::cout;
 
+ TicTacToeManager::TicTacToeManager(TicTacToeData& d)
+ {
+     // declare
+     TicTacToeData data;
+    // In the .cpp file write constructor code to initialize private games vector       
+    // by calling TicTacToeData get_games function
+    data.get_games();
+    // Loop through games,  Write code to update the winner counts.
+
+ }
+
 void TicTacToeManager::save_game(unique_ptr<TicTacToe>&& b)
 {
     // call update winner count pass the winner from TicTacToe to update x, o, or tie totals.

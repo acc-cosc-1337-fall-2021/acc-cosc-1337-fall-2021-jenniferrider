@@ -10,6 +10,7 @@ class TicTacToe3 : public TicTacToe
     public:
     // constructor
     TicTacToe3():TicTacToe(3){};
+    TicTacToe3(std::vector<string> p, string winner){}; //more code here
 
     private:
     bool check_column_win();

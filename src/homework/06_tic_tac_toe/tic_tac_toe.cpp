@@ -54,6 +54,12 @@ void TicTacToe::set_winner()
     winner = (get_player() == "X") ? "O" : "X";
 }
 
+vector<string> TicTacToe::get_pegs()const
+{
+    //returns a vector of strings; return the pegs vector
+    return pegs;
+}
+
 void TicTacToe::clear_board()
 {
     // variables

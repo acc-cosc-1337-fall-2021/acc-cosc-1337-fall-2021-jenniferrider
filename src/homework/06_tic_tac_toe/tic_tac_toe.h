@@ -15,6 +15,7 @@ class TicTacToe
     public:
         // constructors
         TicTacToe(int size): pegs(size*size," "){};
+        TicTacToe(std::vector<string> p, string win){};  //more code here to initialize the pegs vector with p and initialize winner.
         TicTacToe(){};
 
         // functions
@@ -23,6 +24,7 @@ class TicTacToe
         void mark_board(int position);
         string get_player()const;
         string get_winner();
+        vector<string> get_pegs()const;
 
         // friend functions
         friend ostream& operator<<(ostream& out, const TicTacToe& game);
